@@ -1,5 +1,4 @@
-
-const { getRootRelativePath } = require('../common/utils.js');
+const { getRootRelativePath, getModeInfo } = require('../common/utils.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const config = require('../config/config')();
 const webpack = require('webpack');
@@ -7,29 +6,32 @@ const notifier = require('node-notifier');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 // const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 
-module.exports = (mode, port) => {
+module.exports = (mode, { port, fullPublicPath }) => {
+
   return {
     mode,
     /* dev时使用固定地址即可 */
     output: {
       filename: 'app/[name].js',
-      publicPath: '/'
+      publicPath: '/',
     },
+
     resolve: {
       alias: {
-        // 用于开启hooks热加载 
-        'react-dom': '@hot-loader/react-dom',
+        // 用于开启hooks热加载
+        'react-dom': require.resolve('@hot-loader/react-dom'),
       },
     },
+
     devtool: 'eval-source-map',
-    
+
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
       /* TODO: 错误不会同步到浏览器，必须手动刷新 */
-      // new ErrorOverlayPlugin(), 
+      // new ErrorOverlayPlugin(),
       new FriendlyErrorsWebpackPlugin({
         compilationSuccessInfo: {
-          messages: [`服务运行于: http://localhost:${port}, 按住ctrl点击打开`],
+          messages: [`服务运行于: http://localhost:${ port }, 按住ctrl点击打开`],
         },
         // 桌面通知
         onErrors: (severity, errors) => {
@@ -40,13 +42,13 @@ module.exports = (mode, port) => {
 
           notifier.notify({
             title: '😭ZERO: 编译错误, 请查看控制台',
-            message: `${severity} : ${error.name}`,
+            message: `${ severity } : ${ error.name }`,
             subtitle: error.file || '',
             sound: 'Glass',
             // icon: ICON
           });
         },
       }),
-    ]
-  }
-}
+    ],
+  };
+};

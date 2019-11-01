@@ -1,21 +1,40 @@
 const path = require('path');
-const fs = require('fs-extra');
+const config = require('../config/config')();
+const utils = require('@lxjx/utils');
 
-exports.getRootRelativePath = (...arg) => {
+const fullPublicPath = config.publicPath + config.publicDirName;
+
+
+exports.getRootRelativePath = (...args) => {
   const cwd = process.cwd();
-  return arg.length ? path.resolve(cwd, ...arg) : cwd;
+  return args.length ? path.resolve(cwd, ...args) : cwd;
 };
 
-exports.getPostCssConfigPath = () => {
-  const fileName = 'postcss.config.js';
-  const userPath = path.resolve(process.cwd(), './', fileName);
-  const localPath = path.resolve(__dirname, '../rc');
+exports.getModeInfo = (mode) => {
+  const isDevelopment = mode === 'development';
+  const isProduction = mode === 'production';
+  return {
+    isDevelopment,
+    isProduction,
+  };
+};
 
-  /* TODO: 验证是否成功 */
-  if(fs.pathExistsSync(userPath)) {
-    return exports.getRootRelativePath();
+exports.createShare = (mode) => {
+  return {
+    fullPublicPath,
+    isSPA: utils.isEmpty(config.entry),
+  };
+};
+
+exports.getEnvs = (mode) => {
+  const nowEnv = config.env[mode];
+  const defineEnv = {
+    PUBLIC: JSON.stringify(fullPublicPath),
+  };
+  if (!utils.isEmpty(nowEnv)) {
+    for (const key of Object.keys(nowEnv)) {
+      defineEnv[key] = JSON.stringify(nowEnv[key]);
+    }
   }
-
-  console.log(localPath);
-  return localPath;
+  return defineEnv;
 };

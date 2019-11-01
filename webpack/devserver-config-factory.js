@@ -1,28 +1,25 @@
-
 const { getRootRelativePath } = require('../common/utils.js');
 const portfinder = require('portfinder');
 const webpack = require('webpack');
+const config = require('../config/config')();
 
-
-module.exports = async (entry) => {
+module.exports = async () => {
   const port = await portfinder.getPortPromise();
-  
+
   return {
-    contentBase: getRootRelativePath('public/'),
-    watchContentBase: true,
+    contentBase: getRootRelativePath(`./${config.publicDirName}/`),
     publicPath: '/',
+    watchContentBase: true,
     host: '0.0.0.0',
     port,
     hot: true,
     quiet: true,
     overlay: true,
-    /* TODO: 添加proxy配置 */
-    // proxy,
+    proxy: config.proxy,
     clientLogLevel: 'warning',
-    /* TODO: 添加errorOverlayMiddleware */
     before(app, server) {
       /* TODO: HTML改动监听 */
       /* TODO: 数据mock */
-    }
-  }
-}
+    },
+  };
+};

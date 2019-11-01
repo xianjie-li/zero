@@ -20,7 +20,7 @@ module.exports = (isDevelopment, MiniCssExtractPlugin) => {
       {
         loader: isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
         options: {
-          // publicPath: '../../',
+          publicPath: isDevelopment ? '/' : '../../',
         }
       },
       {
@@ -77,14 +77,15 @@ module.exports = (isDevelopment, MiniCssExtractPlugin) => {
     rules: [
       /* ---------js&ts--------- */
       {
-        test: /\.(t|j)sx?$/,
+        test: /\.([tj])sx?$/,
         exclude: /(node_modules|bower_components)/,
         include: getRootRelativePath('./'),
         use: {
           loader: 'babel-loader',
-          options: getBableOptions(isDevelopment)
+          options: getBabelOptions(isDevelopment)
         }
       },
+      /* TODO: pug、html配置 */
       /* ---------style--------- */
       /* sass + css */
       {
@@ -111,7 +112,7 @@ module.exports = (isDevelopment, MiniCssExtractPlugin) => {
       /* 图 */
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        use: fileConfig(`${config.publicDirName}/img/`)
+        use: fileConfig(`${config.publicDirName}/images/`)
       },
       /* 影 */
       {
@@ -127,27 +128,33 @@ module.exports = (isDevelopment, MiniCssExtractPlugin) => {
   };
 };
 
-function getBableOptions(isDevelopment) {
-  return {
+function getBabelOptions(isDevelopment) {
+  const options = {
     cacheDirectory: isDevelopment,
     cacheCompression: isDevelopment,
     presets: [
       [require.resolve('@babel/preset-env'), { useBuiltIns: false }],
+      require.resolve('@babel/preset-react'),
     ],
     plugins: [
-      // [
-      //   // @vue/babel-preset-app里已经包含了，不过为了兼容react配置，礼貌性的引入一下
-      //   '@babel/plugin-transform-runtime',
-      //   {
-      //     corejs: false,
-      //     helpers: true,
-      //     regenerator: true,
-      //     useESModules: false
-      //   }
-      // ],
-      // '@babel/plugin-proposal-optional-chaining',
-      // ['@babel/plugin-proposal-class-properties', { loose: false }],
-      // '@babel/plugin-syntax-dynamic-import'
+      [
+        require.resolve('@babel/plugin-transform-runtime'),
+        {
+          corejs: false,
+          helpers: true,
+          regenerator: true,
+          useESModules: false
+        }
+      ],
+      require.resolve('@babel/plugin-proposal-optional-chaining'),
+      [require.resolve('@babel/plugin-proposal-class-properties'), { loose: false }],
+      require.resolve('@babel/plugin-syntax-dynamic-import'),
     ],
   };
+
+  if (isDevelopment) {
+    options.plugins.push(require.resolve('react-hot-loader/babel'));
+  }
+
+  return options;
 }

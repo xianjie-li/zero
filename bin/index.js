@@ -6,7 +6,8 @@ cmd
   .version('0.0.1')
   .usage('<commond> [options]')
   .command('start', 'start devServer', { executableFile: '../script/start' })
-  .parse(process.argv)
+  .command('build', 'build', { executableFile: '../script/build' })
+  .parse(process.argv);
 
 
 module.exports = cmd;
