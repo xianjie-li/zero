@@ -1,14 +1,15 @@
-const { getRootRelativePath, getModeInfo } = require('../common/utils.js');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const config = require('../config/config')();
 const webpack = require('webpack');
 const notifier = require('node-notifier');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
 // const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
+const { getRootRelativePath } = require('../common/utils');
+const config = require('../config/config')();
 
-module.exports = (mode, { port, fullPublicPath }) => {
+module.exports = (mode, { port }) => {
 
-  return {
+  const devConfig = {
     mode,
     /* dev时使用固定地址即可 */
     output: {
@@ -31,7 +32,7 @@ module.exports = (mode, { port, fullPublicPath }) => {
       // new ErrorOverlayPlugin(),
       new FriendlyErrorsWebpackPlugin({
         compilationSuccessInfo: {
-          messages: [`服务运行于: http://localhost:${ port }, 按住ctrl点击打开`],
+          messages: [`服务运行于: http://localhost:${ port }`],
         },
         // 桌面通知
         onErrors: (severity, errors) => {
@@ -51,4 +52,25 @@ module.exports = (mode, { port, fullPublicPath }) => {
       }),
     ],
   };
+
+  if (config.typescriptChecker) {
+    devConfig.plugins.push(
+      new ForkTsCheckerWebpackPlugin({
+        // 将async设为false，可以阻止Webpack的emit等待类型检查器/linter，并向Webpack的编译添加错误。
+        tsconfig: getRootRelativePath('./tsconfig.json'),
+        async: false,
+        // eslint: true,
+      }),
+      // 将TypeScript类型检查错误以弹框提示
+      // 如果fork-ts-checker-webpack-plugin的async为false时可以不用
+      // 否则建议使用，以方便发现错误
+      // new ForkTsCheckerNotifierWebpackPlugin({
+      //   title: 'ZERO - TypeScript',
+      //   excludeWarnings: true,
+      //   skipSuccessful: true,
+      // }),
+    );
+  }
+
+  return devConfig;
 };

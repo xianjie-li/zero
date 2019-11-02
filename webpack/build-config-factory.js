@@ -2,15 +2,18 @@ const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const { getRootRelativePath, getModeInfo } = require('../common/utils.js');
-const utils = require('@lxjx/utils');
-const config = require('../config/config')();
 const HtmlBeautifyPlugin = require('html-beautify-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const utils = require('@lxjx/utils');
 
-module.exports = (mode, { isSPA }) => {
+const { getRootRelativePath, mixConfigAndArgs, checkToggle } = require('../common/utils.js');
+const config = require('../config/config')();
+
+module.exports = (mode, share) => {
+  const { isSPA, gzip, analyzer, dropConsole } = mixConfigAndArgs(config, share);
+
   const buildConfig = {
     mode,
 
@@ -23,21 +26,21 @@ module.exports = (mode, { isSPA }) => {
 
     devtool: false,
 
-    stats: {
-      assets: true,
-      chunks: false,
-      errorDetails: false,
-      modules: false,
-      entrypoints: false,
-      children: false,
-    },
+    // stats: {
+    //   assets: true,
+    //   chunks: false,
+    //   errorDetails: false,
+    //   modules: false,
+    //   entrypoints: false,
+    //   children: false,
+    // },
 
     optimization: {
       minimizer: [
         new TerserJSPlugin({
           terserOptions: {
             compress: {
-              drop_console: config.dropConsole,
+              drop_console: checkToggle(dropConsole, config.dropConsole),
             },
           },
         }),
@@ -82,7 +85,7 @@ module.exports = (mode, { isSPA }) => {
   };
 
   /* 单页面时对html页面进行美化 */
-  if (utils.isEmpty(config.entry)) {
+  if (!isSPA) {
     buildConfig.plugins.push(
       new HtmlBeautifyPlugin({
         config: {
@@ -97,8 +100,7 @@ module.exports = (mode, { isSPA }) => {
     ;
   }
 
-  /* TODO: 可通过命令使用 */
-  if (config.gzip) {
+  if (checkToggle(gzip)) {
     buildConfig.plugins.push(
       new CompressionPlugin({
         filename: '[path].gz[query]',
@@ -110,8 +112,7 @@ module.exports = (mode, { isSPA }) => {
     );
   }
 
-  /* TODO: 可通过命令使用 */
-  if (config.analyzer) {
+  if (checkToggle(analyzer)) {
     buildConfig.plugins.push(
       new BundleAnalyzerPlugin({
         analyzerMode: 'static', // disabled、server、static

@@ -1,24 +1,23 @@
-const { getRootRelativePath } = require('../common/utils.js');
 const portfinder = require('portfinder');
-const webpack = require('webpack');
+
+const { getRootRelativePath } = require('../common/utils.js');
 const config = require('../config/config')();
 
-module.exports = async () => {
+module.exports = async (cmdPort, cmdHost) => {
   const port = await portfinder.getPortPromise();
 
   return {
     contentBase: getRootRelativePath(`./${config.publicDirName}/`),
     publicPath: '/',
     watchContentBase: true,
-    host: '0.0.0.0',
-    port,
+    host: cmdHost || config.host,
+    port: cmdPort || config.port || port,
     hot: true,
     quiet: true,
     overlay: true,
     proxy: config.proxy,
     clientLogLevel: 'warning',
-    before(app, server) {
-      /* TODO: HTML改动监听 */
+    before(app, server, compiler) {
       /* TODO: 数据mock */
     },
   };

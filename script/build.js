@@ -1,22 +1,31 @@
-const cmd = require('../common/cmd');
-const { createShare } = require('../common/utils.js');
-const baseConfigFactory = require('../webpack/base-config-factory');
-const buildConfigFactory = require('../webpack/build-config-factory');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+
+const cmd = require('../common/cmd');
+const { createShare, checkArgs } = require('../common/utils.js');
+const baseConfigFactory = require('../webpack/base-config-factory');
+const buildConfigFactory = require('../webpack/build-config-factory');
 
 const mode = 'production';
 process.env.NODE_ENV = mode;
 
 cmd
-  .option('-a, --analyzer', '分析构建')
-  .option('-g, --gzip', '开启gzip压缩')
+  .option('--analyzer <toggle>', '是否分析包大小')
+  .option('--gzip <toggle>', '是否开启gzip')
+  .option('--drop-console <toggle>', '是否在打包时移除console')
   .parse(process.argv);
+
+const [entry, tpl] = checkArgs(cmd.args);
 
 startBuild().then();
 
 async function startBuild() {
   const share = {
+    entry,
+    template: tpl,
+    gzip: cmd.gzip,
+    analyzer: cmd.analyzer,
+    dropConsole: cmd.dropConsole,
     ...createShare(),
   };
 
