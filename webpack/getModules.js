@@ -142,12 +142,10 @@ function getBabelOptions(isDevelopment) {
     cacheDirectory: isDevelopment,
     cacheCompression: isDevelopment,
     presets: [
-      require.resolve('@babel/preset-typescript'),
       [require.resolve('@babel/preset-env'), { useBuiltIns: false }],
       require.resolve('@babel/preset-react'),
     ],
     plugins: [
-      [require.resolve('@babel/plugin-transform-typescript'), { allowNamespaces: true, importHelpers: true, declaration: true }],
       [
         // https://github.com/babel/babel/blob/master/packages/babel-preset-stage-0/README.md
         require.resolve('@babel/plugin-transform-runtime'),
@@ -163,6 +161,16 @@ function getBabelOptions(isDevelopment) {
       require.resolve('@babel/plugin-syntax-dynamic-import'),
     ],
   };
+
+  /* 开启typescript */
+  if (fs.pathExistsSync(getRootRelativePath('./tsconfig.json'))) {
+    options.presets.push(
+      require.resolve('@babel/preset-typescript'),
+    );
+    options.plugins.push(
+      [require.resolve('@babel/plugin-transform-typescript'), { allowNamespaces: true, importHelpers: true, declaration: true }],
+    )
+  }
 
   if (isDevelopment) {
     options.plugins.push(require.resolve('react-hot-loader/babel'));

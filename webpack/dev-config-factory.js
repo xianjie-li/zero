@@ -6,6 +6,7 @@ const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-web
 // const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 const { getRootRelativePath } = require('../common/utils');
 const config = require('../config/config')();
+const fs = require('fs-extra');
 
 module.exports = (mode, { port }) => {
 
@@ -53,7 +54,7 @@ module.exports = (mode, { port }) => {
     ],
   };
 
-  if (config.typescriptChecker) {
+  if (config.typescriptChecker && fs.pathExistsSync(getRootRelativePath('./tsconfig.json'))) {
     devConfig.plugins.push(
       new ForkTsCheckerWebpackPlugin({
         // 将async设为false，可以阻止Webpack的emit等待类型检查器/linter，并向Webpack的编译添加错误。
