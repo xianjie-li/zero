@@ -1,8 +1,6 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const path = require('path');
-const utils = require('@lxjx/utils');
 
 const { getRootRelativePath, getModeInfo, getEnvs, mixConfigAndArgs, getEntry, createEntryAndTplPlugins } = require('../common/utils');
 const config = require('../config/config')();

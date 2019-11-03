@@ -1,4 +1,5 @@
 const autoprefixer = require('autoprefixer');
+const fs = require('fs-extra');
 
 const config = require('../config/config')();
 const { getRootRelativePath } = require('../common/utils.js');
