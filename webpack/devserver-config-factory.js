@@ -17,8 +17,7 @@ module.exports = async (cmdPort, cmdHost) => {
     overlay: true,
     proxy: config.proxy,
     clientLogLevel: 'warning',
-    before(app, server, compiler) {
-      /* TODO: 数据mock */
-    },
+    // before(app, server, compiler) {
+    // },
   };
 };

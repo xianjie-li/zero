@@ -6,7 +6,7 @@ const HtmlBeautifyPlugin = require('html-beautify-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const utils = require('@lxjx/utils');
+const fs = require('fs-extra');
 
 const { getRootRelativePath, mixConfigAndArgs, checkToggle } = require('../common/utils.js');
 const config = require('../config/config')();
@@ -74,13 +74,6 @@ module.exports = (mode, share) => {
     plugins: [
       new ProgressBarPlugin(),
       new CleanWebpackPlugin(),
-      /* 移动静态资源 */
-      new CopyPlugin([
-        {
-          from: getRootRelativePath('./', config.publicDirName),
-          to: getRootRelativePath(`${ config.outputPath }/${ config.publicDirName }`),
-        },
-      ]),
     ],
   };
 
@@ -119,6 +112,19 @@ module.exports = (mode, share) => {
         openAnalyzer: false,
       }),
     );
+  }
+
+  /* 移动静态资源 */
+  const publicDir = getRootRelativePath('./', config.publicDirName);
+  if (fs.pathExistsSync(publicDir)) {
+    buildConfig.plugins.push(
+      new CopyPlugin([
+        {
+          from: publicDir,
+          to: getRootRelativePath(`${ config.outputPath }/${ config.publicDirName }`),
+        },
+      ])
+    )
   }
 
   return buildConfig;

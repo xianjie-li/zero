@@ -1,5 +1,13 @@
 {
-  "name": "zero",
+  "name": "@lxjx/zero",
+  "version": "0.9.0",
+  "description": "zero configured react scaffolding, supports Typescript, out of the box",
+  "authors": {
+    "name": "lixianjie",
+    "email": "1073830130@qq.com"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/Iixianjie/zero",
   "dependencies": {
     "@babel/core": "^7.6.4",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
@@ -13,19 +21,32 @@
     "@babel/runtime": "^7.6.3",
     "@hot-loader/react-dom": "^16.10.2",
     "@lxjx/utils": "^1.0.9",
+    "@types/node": "^12.12.5",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.3",
+    "@typescript-eslint/eslint-plugin": "^2.6.0",
+    "@typescript-eslint/parser": "^2.6.0",
     "autoprefixer": "^9.7.1",
     "babel-loader": "^8.0.6",
+    "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
     "clean-webpack-plugin": "^3.0.0",
     "commander": "^3.0.2",
     "compression-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.2.0",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.2.0",
     "file-loader": "^4.2.0",
     "fork-ts-checker-notifier-webpack-plugin": "^1.0.2",
     "fork-ts-checker-webpack-plugin": "^3.0.1",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "fs-extra": "^8.1.0",
+    "glob": "^7.1.5",
     "html-beautify-webpack-plugin": "^1.0.5",
     "html-webpack-plugin": "^3.2.0",
     "less": "^3.10.3",
@@ -50,10 +71,10 @@
     "webpack": "^4.41.2",
     "webpack-bundle-analyzer": "^3.6.0",
     "webpack-dev-server": "^3.9.0",
-    "webpack-merge": "^4.2.2"
+    "webpack-merge": "^4.2.2",
+    "chokidar": "^3.3.0"
   },
-  "devDependencies": {},
   "bin": {
     "zero": "./bin/index.js"
-  }
+  },
 }

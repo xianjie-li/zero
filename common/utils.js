@@ -2,9 +2,10 @@ const path = require('path');
 const utils = require('@lxjx/utils');
 const chalk = require('chalk');
 const fs = require('fs-extra');
+const glob = require('glob');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = require('../config/config')();
-
 
 const fullPublicPath = config.publicPath + config.publicDirName;
 
@@ -28,7 +29,7 @@ exports.getModeInfo = (mode/* production | development */) => {
 exports.createShare = (mode/* production | development */) => {
   return {
     fullPublicPath,
-    isSPA: utils.isEmpty(config.pages),
+    isSPA: !config.pages,
   };
 };
 
@@ -37,7 +38,6 @@ exports.getEnvs = (mode/* production | development */) => {
   const nowEnv = config.env[mode];
   const defineEnv = {
     PUBLIC: JSON.stringify(fullPublicPath),
-    NODE_ENV: mode,
   };
   if (!utils.isEmpty(nowEnv)) {
     for (const key of Object.keys(nowEnv)) {
@@ -79,7 +79,7 @@ exports.log = {
 
 /* 把配置和命令行参数与选项合并，命令行的配置优先于配置文件 */
 exports.mixConfigAndArgs = (config/* zeroConfig */, args/* { [k: any]: any } */) => {
-  const _config = {...config};
+  const _config = { ...config };
   for (const [key, value] of Object.entries(args)) {
     if (!utils.isNullOrUndefined(value)) {
       _config[key] = value;
@@ -90,6 +90,10 @@ exports.mixConfigAndArgs = (config/* zeroConfig */, args/* { [k: any]: any } */)
 
 /* 简化命令行参数与配置文件中布尔值与开关值0、1的选取方式 */
 exports.checkToggle = (toggleNumber, toggleBoolean) => {
+  if (toggleNumber === undefined) {
+    return toggleBoolean;
+  }
+
   const num = +toggleNumber;
   if (utils.isNumber(num)) {
     if (num === 0) {
@@ -106,6 +110,15 @@ exports.checkToggle = (toggleNumber, toggleBoolean) => {
 /* 检查参数是否通过并返回js和template和entry的绝对路径 */
 exports.checkArgs = (args/* string[] */) => {
   if (!args.length) {
+    if (exports.createShare().isSPA) {
+      return [];
+    }
+    const entry = glob.sync(exports.getRootRelativePath('./src/main.*(j|t)s?(x)'));
+    const tpl = glob.sync(exports.getRootRelativePath(config.template));
+    if (entry.length === 0 || tpl.length === 0) {
+      exports.log.error(`请确保执行目录存在${ chalk.blue('./src/main.(t|j)sx?') }以及${ chalk.blue(config.template) }文件，你也可以通过${ chalk.blue('zero (start|build) [entry] [tpl]') }来自行指定入口和模板文件`);
+      process.exit(1);
+    }
     return [];
   }
 
@@ -126,4 +139,99 @@ exports.checkArgs = (args/* string[] */) => {
     entryPath,
     tplPath,
   ];
+};
+
+/**
+ * 以指定规则获取cwd/src/pages/下的文件作为入口以及模板，规则如下:
+ * 1. 以第一级目录下的直接子目录名作为入口名
+ * 2. 将作为入口名目录下的同名(jsx?|tsx?)文件作为入口文件，同名的(pug|html)文件作为模板文件
+ * 3. pageInfo.(js|ts)中的导出会作为模板变量(pageInfo)传入模板文件中，可以使用对应的模板语法获取
+ * 4. 直接子目录下的js以'_'开头进行命名可以避免改文件被误识别为入口文件，直接子目录内部的任何子目录不受以上规则影响
+ * */
+exports.getEntry = () => {
+  const entrys = glob.sync(
+    // 不匹配下划线开头的以及pageInfo
+    path.resolve(exports.getRootRelativePath(), './src/pages/', '*/!(_|pageInfo)*.{j,t}s?(x)'),
+  );
+  if (utils.isArray(entrys) && entrys.length > 0) {
+    const formatEntry = [];
+
+    entrys.forEach((v) => {
+      const baseName = path.basename(v).replace(/\.(js|ts)/, '');
+      const dirName = path.dirname(v);
+
+      // 查找入口js所属路径下的模板文件(pug|html)
+      const tpl = glob.sync(`${ path.resolve(dirName) }*/*.{pug,html}`);
+      // 该目录下的pageInfo.js文件作为额外信息注入模板
+      let pageInfo = glob.sync(`${ path.resolve(dirName) }*/pageInfo.{j,t}s`);
+
+      if (pageInfo.length) {
+        pageInfo = require(pageInfo[0]);
+      } else {
+        pageInfo = {};
+      }
+
+      /* 存在模板文件时该才视为一个入口 */
+      if (tpl[0]) {
+        formatEntry.push({
+          name: baseName,
+          entry: v,
+          template: tpl[0],
+          pageInfo,
+        });
+      }
+    });
+
+    return formatEntry;
+  }
+
+  exports.log.error('没有在./src/pages/目录下找到任何匹配的入口文件');
+};
+
+/* 根据当前的入口类型生成不同的入口和模板配置 */
+exports.createEntryAndTplPlugins = ({
+  isSPA, entry, isDevelopment, userPkg, template
+}, entryMetas) => {
+  if (isSPA) {
+    return [
+      {
+        app: exports.getRootRelativePath(entry),
+      },
+      [
+        new HtmlWebpackPlugin({
+          filename: 'index.html',
+          template: exports.getRootRelativePath(template),
+          minify: isSPA, // 单页面时压缩html页面
+          hash: config.htmlHash || isDevelopment,
+          chunks: ['runtime', 'vendor', 'common', 'app'],
+          templateParameters: {
+            public: fullPublicPath,
+            title: userPkg.name || 'zero-cli',
+          }
+        }),
+      ]
+    ];
+  }
+
+  const entryMap = {};
+  const tplPlugins = [];
+  entryMetas.forEach(page => {
+    entryMap[page.name] = page.entry;
+    tplPlugins.push(
+      new HtmlWebpackPlugin({
+        filename: page.name + '.html',
+        template: page.template,
+        minify: isSPA, // 单页面时压缩html页面
+        cache: isDevelopment,
+        hash: config.htmlHash || isDevelopment,
+        chunks: ['runtime', 'vendor', 'common', page.name],
+        templateParameters: {
+          public: fullPublicPath,
+          title: userPkg.name || 'zero-cli',
+          pageInfo: page.pageInfo,
+        }
+      }),
+    );
+  });
+  return [entryMap, tplPlugins];
 };
