@@ -20,7 +20,7 @@
 <!-- /TOC -->
 
 <p align="center">
-	<img src="./doc/img/logo.png" alt="ZERO" />
+	<img src="https://github.com/Iixianjie/zero/blob/master/doc/img/logo.png?raw=true" alt="ZERO" />
 </p>
 
 
