@@ -1,6 +1,6 @@
 {
   "name": "@lxjx/zero",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "zero configured react scaffolding, supports Typescript, out of the box",
   "authors": {
     "name": "lixianjie",
