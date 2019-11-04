@@ -6,6 +6,9 @@
 - [ ] cli
 - [ ] zero.config.js
 - [ ] 开发多页面程序
+- [ ] eslint ts checker
+
+
 
 
 
