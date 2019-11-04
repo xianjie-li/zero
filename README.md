@@ -1,16 +1,43 @@
-- [ ] logo
-- [ ] 特性说明
-- [ ] 快速上手
-- [ ] 使用cli生成项目
-- [ ] typescript
+
+
 - [ ] cli
-- [ ] zero.config.js
 - [ ] 开发多页面程序
-- [ ] eslint ts checker
+
+<!-- TOC -->
+
+- [Features](#features)
+- [快速上手](#快速上手)
+    - [`安装`](#安装)
+    - [`创建入口文件`](#创建入口文件)
+    - [`启动开发服务`](#启动开发服务)
+    - [`配置热重载`](#配置热重载)
+    - [`为组件添加样式`](#为组件添加样式)
+    - [`添加文件资源`](#添加文件资源)
+    - [添加静态资源](#添加静态资源)
+    - [`构建`](#构建)
+- [使用cli生成项目](#使用cli生成项目)
+
+<!-- /TOC -->
+
+<p align="center">
+	<img src="./doc/img/logo.png" alt="ZERO" />
+</p>
 
 
 
+# Features
 
+✨ 配置和业务文件隔离 ，无须触碰任何一行配置文件即可获得完善的开发体验
+
+✨ 开箱式的typescript支持，并且基于babel plugin进行ts编译，比ts-loader效率更高
+
+✨ 隔离配置的同时，也支持通过zero.config.js对一些非常常用的特性进行自定义配置
+
+✨ 支持多页面应用开发
+
+<br />
+
+<br />
 
 # 快速上手
 
@@ -345,6 +372,187 @@ npx zero build ./index.jsx ./index.html
 ```
 
 完成后，直接在浏览器运行`dist/index.html`
+
+<br />
+
+<br />
+
+# 使用cli生成项目
+
+首选，确保你已经全局或本地安装了`zero`, 如果没有，请查看 [安装](#安装)
+
+安装完成后，命令行切换到你要创建项目的目录，执行list命令查看项目类型列表:
+
+```shell
+zero list
+
+# -> 输出如下
+λ zero list
+ZERO: 模板列表:
+- js-spa            javascript单页应用
+- ts-spa            typescript单页应用
+- js-mpa            javascript多页应用
+- ts-mpa            typescript多页应用
+```
+
+然后根据你想要创建的项目类型：
+
+```shell
+zero create ts-spa my-tsapp
+```
+
+创建完成后，根据命令行的提示安装依赖并执行对应的开发命令即可。
+
+<br />
+
+<br />
+
+# typescript
+
+推荐使用`zero craete ts-spa projectName` 进行typescript项目的创建，包含了一套非常通用的配置，如果你想从零开始的话，也是非常简单的, 请查看 [快速上手](#快速上手)。 
+
+项目根目录存在tsconfig.json文件即视为开启typescript，另一个值得注意的点是zero.config.js中的typescriptChecker配置项,  开启后会通过webpack新开一个线程进行类型检测并将错误反馈到控制台，如果你的编辑器支持ts类型检测，可以选择关闭它减少电脑的资源占用。
+
+```js
+{
+    typescriptChecker: true, // 默认开启
+}
+```
+
+<br />
+
+<br />
+
+# zero.config.js
+
+通过项目根目录的zero.config.js, 可以对一些常用的配置项进行配置
+
+```js
+const defaultConfig = {
+  // 资源访问路径, 当需要编译后的文件能本地直接访问时，可以设置为./
+  publicPath: '/', 
+    
+  // 公众资源文件夹，存放不想通过webpack编译的东西，打包后所有打包产物和该目录下的文件会被移动outputPath下的同名目录下
+  publicDirName: 'public', 
+    
+  // 文件打包到此目录, 相对于当前工作目录
+  outputPath: './dist', 
+
+  // 默认入口文件位置，只在没有设置pages的情况下生效，可通过命令行指定
+  entry: './src/main', 
+    
+  // 默认模板文件位置，只在没有设置pages的情况下生效，可通过命令行指定
+  template: './index.html', 
+
+  /**
+   * 开启后，将支持多页面程序，会以指定规则读取cwd()/src/pages下的文件作为入口，规则如下:
+   * 1. 以第一级目录下的直接子目录名作为入口名
+   * 2. 将作为入口名目录下的同名(jsx?|tsx?)文件作为入口文件，同名的(pug|html)文件作为模板文件
+   * 3. pageInfo.(js|ts)中的导出会作为模板变量(pageInfo)传入模板文件中，可以使用对应的模板语法获取
+   * 4. 直接子目录下的js以'_'开头进行命名可以避免改文件被误识别为入口文件，直接子目录内部的任何子目录不受以上规则影响
+   * */
+  pages: false, // 支持命令行开关（1、0）
+
+  // dev模式下使用, 开启mock服务, 支持命令行开关（1、0）
+  mock: false,
+
+  // 配置服务代理
+  proxy: {},
+    
+  // 配置环境变量，在生产和开发环境中可直接全局访问到它们如全局的"PUBLIC"
+  env: {
+    // development: { /* 请勿使用PUBLIC作为key，因为它已经被占用 */ },
+    // production: { /* 请勿使用PUBLIC作为key，因为它已经被占用 */ }
+  },
+    
+  // dev模式下使用, 支持命令行
+  host: '0.0.0.0',
+    
+  // 打包时为文件生成hash
+  hash: true, 
+    
+  // 打包时给html的引用资源打上hash(src="/app/app.js?6d635080fd6cd30bb150") 默认dev模式下默认开启，build模式自动关闭。可以通过此选项手动开启
+  htmlHash: false, 
+    
+  // 是否开启gzip, 支持命令行开关（1、0）
+  gzip: true, 
+    
+  // 是否分析包大小, 支持命令行开关（1、0）
+  analyzer: true, 
+    
+  // 是否在打包时移除console, 支持命令行开关（1、0）
+  dropConsole: true, 
+    
+  // 传递给sass-loader的options
+  sass: { 
+    // prependData: '@import "@/style/_base/index.scss";', // 可以这样来配置所有文件共享的变量、混合等
+    sassOptions: {
+      // data: '@import "@/style/_base/index.scss";',
+      precision: 3
+    }
+  },
+    
+  // 传递给less-loader的options
+  less: {}, 
+    
+  // 传递给pug-loader的options
+  pug: {}, 
+    
+  // 默认的webpack扩展名
+  extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    
+  // 目录别名
+  alias: { // 同webpackOptions.alias
+    '@': path.resolve(process.cwd(), './src')
+  },
+  
+  /* 工作目录根目录存在tsconfig.json时视为开启typescript支持 */
+  // 底层使用babel对typescript进行编译，速度会比ts-loader更快，但是babel只负责转换ts，不会对类型错误进行提示，如果你使用idea或者vscode等支持ts类型检测的编辑器，确保项目根存在tsconfig.json文件即可，如果编辑器不支持类型检测或希望webpack对类型错误进行提示则开启此项，它将开启一个独立的线程来进行类型检测。
+  typescriptChecker: true, 
+    
+  // 通过暴露的webpack配置，你可以对配置做一些简单的扩展, 请确保将修改后的config正确返回
+  configWebpack(webpackConfig, { isDevelopment, isProduction }) {
+    if (!this.pages && isProduction) {
+      webpackConfig.output.filename = 'myApp.js';
+    }
+    return webpackConfig;
+  },
+};
+```
+
+<br />
+
+<br />
+
+# eslint 
+
+首先，不推荐使用webpack来检测代码风格，只要确保目录下包含eslint配置文件，然后正确的安装了对应依赖，即可通过vscode或idea获得eslint检测，编辑器对错误的提示比控制台更加直观且不会造成编辑器和webpack同时检测代码风格引起的性能浪费。
+
+如果你使用cli来生成项目的话，确保你的编辑器开启了eslint即可，其他的一切都是开箱式的。
+
+
+
+### typescript
+
+通过eslint和typescript插件可以获得非常好的代码风格支持。如果你通过cli创建的ts项目，那这也是默认支持的。
+
+* 不要使用tslint，它的规则相对较少并且仓库正在跟eslint进行合并。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
