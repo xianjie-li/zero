@@ -1,0 +1,15 @@
+{
+  "name": "zero-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "zero start",
+    "start:mock": "zero start --mock=1",
+    "build": "zero build"
+  },
+  "devDependencies": {
+    "@lxjx/zero": "^0.9.4"
+  },
+  "dependencies": {}
+}

@@ -62,6 +62,7 @@ exports.log = {
     }
 
     console.log(`${ chalk.red('❌ ' + prefix) }${ msg }`);
+    process.exit(1);
   },
   /* 支持字符串 */
   info(string = '') {
@@ -73,7 +74,6 @@ exports.log = {
   },
   success(string = '') {
     console.log(`${ chalk.green('✔ ' + prefix) }${ string }`);
-
   },
 };
 

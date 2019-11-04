@@ -1,0 +1,44 @@
+$theme: #61dafb;
+$theme-dark: #30788b;
+$color: rgba(0,0,0,0.45);
+
+.app {
+  position: relative;
+  padding: 80px 12px;
+  font-size: 42px;
+  text-align: center;
+  color: $color;
+
+  &::after {
+    content: "0";
+    font-family: monospace;
+    position: absolute;
+    line-height: 1;
+    top: -50px;
+    left: 50%;
+    font-size: 700px;
+    transform: translateX(-50%);
+    color: rgba(0,0,0,0.05);
+    pointer-events: none;
+  }
+}
+
+.logo {
+  user-select: none;
+  font-family: fantasy;
+  font-size: 180px;
+  color: $theme;
+  text-shadow:
+    2px 2px 4px $theme-dark,
+    1px 1px 2px #333;
+}
+
+.docLink {
+  font-size: 24px;
+  margin: 32px 0 0;
+
+  & + a {
+    font-size: 16px;
+    color: $theme-dark;
+  }
+}
