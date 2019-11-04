@@ -110,7 +110,7 @@ exports.checkToggle = (toggleNumber, toggleBoolean) => {
 /* 检查参数是否通过并返回js和template和entry的绝对路径 */
 exports.checkArgs = (args/* string[] */) => {
   if (!args.length) {
-    if (exports.createShare().isSPA) {
+    if (!exports.createShare().isSPA) {
       return [];
     }
     const entry = glob.sync(exports.getRootRelativePath('./src/main.*(j|t)s?(x)'));
