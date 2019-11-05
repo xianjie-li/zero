@@ -160,6 +160,7 @@ function getBabelOptions(isDevelopment) {
       require.resolve('@babel/plugin-proposal-optional-chaining'),
       [require.resolve('@babel/plugin-proposal-class-properties'), { loose: false }],
       require.resolve('@babel/plugin-syntax-dynamic-import'),
+      require.resolve("styled-jsx/babel"),
     ],
   };
 
