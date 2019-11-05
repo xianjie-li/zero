@@ -5,6 +5,9 @@ const ora = require('ora');
 const cmd = require('../common/cmd');
 const { log, getRootRelativePath } = require('../common/utils');
 const templates = require('../template/template-infos');
+const { promisify } = require('@lxjx/utils');
+const asyncCopy = promisify(fs.copy);
+const pkg = require('../package.json');
 
 cmd.parse(process.argv);
 
@@ -34,8 +37,15 @@ function createTemplate() {
 
   const spinner = ora('正在创建文件，请稍候...').start();
 
-  nowTpl.extraFiles.forEach(path => {
-    fs.copySync(path, projectPath);
+  nowTpl.extraFiles.forEach(async path => {
+    await asyncCopy(path, projectPath);
+  });
+
+  const userPkgPath = getRootRelativePath('./package.json');
+  const userPkg = require(userPkgPath);
+  userPkg['devDependencies']['@lxjx/zero'] = `^${pkg.version}`;
+  fs.outputJsonSync(userPkgPath, userPkg, {
+    spaces: 2,
   });
 
   spinner.succeed('创建成功!');
