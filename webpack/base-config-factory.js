@@ -9,6 +9,7 @@ const userPkg = require(getRootRelativePath('./package.json')) || {};
 
 module.exports = (mode, share) => {
   const { fullPublicPath, isSPA, entry, template } = mixConfigAndArgs(config, share);
+
   const { isDevelopment } = getModeInfo(mode);
 
   const entryMetas = config.pages ? getEntry() : [];

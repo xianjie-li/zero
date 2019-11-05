@@ -34,7 +34,7 @@ async function startServer() {
     port: devserverConfig.port,
     entry,
     template: tpl,
-    ...createShare(),
+    ...createShare(mode),
   };
 
   const webpackConfig = merge(baseConfigFactory(mode, share), devConfigFactory(mode, share));

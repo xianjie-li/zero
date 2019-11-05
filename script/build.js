@@ -26,7 +26,7 @@ async function startBuild() {
     gzip: cmd.gzip,
     analyzer: cmd.analyzer,
     dropConsole: cmd.dropConsole,
-    ...createShare(),
+    ...createShare(mode),
   };
 
   webpack(merge(baseConfigFactory(mode, share), buildConfigFactory(mode, share)),

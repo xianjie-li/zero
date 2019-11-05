@@ -28,7 +28,7 @@ exports.getModeInfo = (mode/* production | development */) => {
 /* 根据mode创建一些常用的共享配置 */
 exports.createShare = (mode/* production | development */) => {
   return {
-    fullPublicPath: process.env.NODE_ENV === 'development' ? '/' : fullPublicPath,
+    fullPublicPath: mode === 'development' ? '/' : fullPublicPath,
     isSPA: !config.pages,
   };
 };
@@ -37,7 +37,7 @@ exports.createShare = (mode/* production | development */) => {
 exports.getEnvs = (mode/* production | development */) => {
   const nowEnv = config.env[mode];
   const defineEnv = {
-    PUBLIC: JSON.stringify(fullPublicPath),
+    PUBLIC: JSON.stringify(mode === 'development' ? '/' : fullPublicPath),
   };
   if (!utils.isEmpty(nowEnv)) {
     for (const key of Object.keys(nowEnv)) {
@@ -190,7 +190,7 @@ exports.getEntry = () => {
 
 /* 根据当前的入口类型生成不同的入口和模板配置 */
 exports.createEntryAndTplPlugins = ({
-  isSPA, entry, isDevelopment, userPkg, template
+  isSPA, entry, isDevelopment, userPkg, template, fullPublicPath: _public
 }, entryMetas) => {
   if (isSPA) {
     return [
@@ -205,7 +205,7 @@ exports.createEntryAndTplPlugins = ({
           hash: config.htmlHash || isDevelopment,
           chunks: ['runtime', 'vendor', 'common', 'app'],
           templateParameters: {
-            public: fullPublicPath,
+            public: _public,
             title: userPkg.name || 'zero-cli',
           }
         }),
@@ -226,7 +226,7 @@ exports.createEntryAndTplPlugins = ({
         hash: config.htmlHash || isDevelopment,
         chunks: ['runtime', 'vendor', 'common', page.name],
         templateParameters: {
-          public: fullPublicPath,
+          public: _public,
           title: userPkg.name || 'zero-cli',
           pageInfo: page.pageInfo,
         }
