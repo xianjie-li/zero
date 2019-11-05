@@ -1,4 +1,5 @@
 const fs = require('fs-extra');
+const path = require('path');
 const chalk = require('chalk');
 const ora = require('ora');
 
@@ -13,7 +14,7 @@ cmd.parse(process.argv);
 
 createTemplate();
 
-function createTemplate() {
+async function createTemplate() {
   const [tplName, projectName] = cmd.args;
 
   if (!tplName) {
@@ -37,18 +38,20 @@ function createTemplate() {
 
   const spinner = ora('正在创建文件，请稍候...').start();
 
-  nowTpl.extraFiles.forEach(async path => {
-    await asyncCopy(path, projectPath);
-  });
+  for (const filePath of nowTpl.extraFiles) {
+    fs.copySync(filePath, projectPath);
+  }
 
-  const userPkgPath = getRootRelativePath('./package.json');
+  const userPkgPath = path.resolve(projectPath, './package.json');
   const userPkg = require(userPkgPath);
   userPkg['devDependencies']['@lxjx/zero'] = `^${pkg.version}`;
+  userPkg['name'] = projectName;
   fs.outputJsonSync(userPkgPath, userPkg, {
     spaces: 2,
   });
 
   spinner.succeed('创建成功!');
+
   log.info(`请在项目目录执行${chalk.blue('yarn')} 或 ${chalk.blue('npm install')} 安装依赖, 安装完成后, 根据README.md文件中的说明启动开发服务，或者查看文档:`);
   console.log('https://github.com/Iixianjie/zero');
 }
