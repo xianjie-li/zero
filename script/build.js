@@ -2,9 +2,10 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 
 const cmd = require('../common/cmd');
-const { createShare, checkArgs } = require('../common/utils.js');
+const { createShare, checkArgs, getModeInfo } = require('../common/utils.js');
 const baseConfigFactory = require('../webpack/base-config-factory');
 const buildConfigFactory = require('../webpack/build-config-factory');
+const config = require('../config/config')();
 
 const mode = 'production';
 process.env.NODE_ENV = mode;
@@ -31,7 +32,7 @@ async function startBuild() {
 
   const webpackConfig = merge(baseConfigFactory(mode, share), buildConfigFactory(mode, share));
 
-    webpack(webpackConfig, (err, stats) => {
+    webpack(config.configWebpack(webpackConfig, getModeInfo(mode)), (err, stats) => {
       if (err) {
         console.error(err.stack || err);
         if (err.details) {
