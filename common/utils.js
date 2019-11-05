@@ -28,7 +28,7 @@ exports.getModeInfo = (mode/* production | development */) => {
 /* 根据mode创建一些常用的共享配置 */
 exports.createShare = (mode/* production | development */) => {
   return {
-    fullPublicPath,
+    fullPublicPath: process.env.NODE_ENV === 'development' ? '/' : fullPublicPath,
     isSPA: !config.pages,
   };
 };
