@@ -72,8 +72,8 @@ module.exports = (mode, share) => {
     },
 
     plugins: [
-      new ProgressBarPlugin(),
       new CleanWebpackPlugin(),
+      new ProgressBarPlugin(),
     ],
   };
 
@@ -91,6 +91,19 @@ module.exports = (mode, share) => {
         replace: [' type="text/javascript"'],
       }))
     ;
+  }
+
+  /* 移动静态资源 */
+  const publicDir = getRootRelativePath('./', config.publicDirName);
+  if (fs.pathExistsSync(publicDir)) {
+    buildConfig.plugins.push(
+      new CopyPlugin([
+        {
+          from: publicDir,
+          to: getRootRelativePath(`${ config.outputPath }/${ config.publicDirName }`),
+        },
+      ])
+    )
   }
 
   if (checkToggle(gzip)) {
@@ -112,19 +125,6 @@ module.exports = (mode, share) => {
         openAnalyzer: false,
       }),
     );
-  }
-
-  /* 移动静态资源 */
-  const publicDir = getRootRelativePath('./', config.publicDirName);
-  if (fs.pathExistsSync(publicDir)) {
-    buildConfig.plugins.push(
-      new CopyPlugin([
-        {
-          from: publicDir,
-          to: getRootRelativePath(`${ config.outputPath }/${ config.publicDirName }`),
-        },
-      ])
-    )
   }
 
   return buildConfig;

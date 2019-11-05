@@ -29,8 +29,9 @@ async function startBuild() {
     ...createShare(mode),
   };
 
-  webpack(merge(baseConfigFactory(mode, share), buildConfigFactory(mode, share)),
-    (err, stats) => {
+  const webpackConfig = merge(baseConfigFactory(mode, share), buildConfigFactory(mode, share));
+
+    webpack(webpackConfig, (err, stats) => {
       if (err) {
         console.error(err.stack || err);
         if (err.details) {
