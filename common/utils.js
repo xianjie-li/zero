@@ -28,7 +28,7 @@ exports.getModeInfo = (mode/* production | development */) => {
 /* 根据mode创建一些常用的共享配置 */
 exports.createShare = (mode/* production | development */) => {
   return {
-    fullPublicPath: mode === 'development' ? '/' : fullPublicPath,
+    fullPublicPath: mode === 'development' ? '' : fullPublicPath,
     isSPA: !config.pages,
   };
 };
@@ -37,7 +37,7 @@ exports.createShare = (mode/* production | development */) => {
 exports.getEnvs = (mode/* production | development */) => {
   const nowEnv = config.env[mode];
   const defineEnv = {
-    PUBLIC: JSON.stringify(mode === 'development' ? '/' : fullPublicPath),
+    PUBLIC: JSON.stringify(mode === 'development' ? '' : fullPublicPath),
   };
   if (!utils.isEmpty(nowEnv)) {
     for (const key of Object.keys(nowEnv)) {
