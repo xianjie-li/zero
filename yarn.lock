@@ -8220,6 +8220,11 @@ style-loader@^1.0.0:
     loader-utils "^1.2.3"
     schema-utils "^2.0.1"
 
+styled-jsx-plugin-sass@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/styled-jsx-plugin-sass/-/styled-jsx-plugin-sass-1.0.0.tgz#a26e2002f57519f97a03a38ea6aabe1ee48478df"
+  integrity sha512-24c+jRreOo5mn7ln7q5QaeyBAAsBaUAJsBc7voLygmrF7fThXbo8Bn1UEbAKIfF2K8xSeiY3XGGt6xRYi4/C4g==
+
 styled-jsx@^3.2.3:
   version "3.2.3"
   resolved "https://registry.npmjs.org/styled-jsx/-/styled-jsx-3.2.3.tgz#c3b160a0622c892485103d0fef855347d78b9b67"
