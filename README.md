@@ -33,7 +33,9 @@
 
 ✨ 隔离配置的同时，也支持通过zero.config.js对一些非常常用的特性进行自定义配置
 
-✨ 支持多页面应用开发
+✨ 多页面应用开发
+
+✨ 全面的css支持,包括css module、sass、less、styled-jsx
 
 <br />
 
