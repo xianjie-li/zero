@@ -5,8 +5,8 @@
 
 <!-- TOC -->
 
-- [Features](#features)
-- [快速上手](#快速上手)
+- [✨Features](#✨features)
+- [💥快速上手](#💥快速上手)
     - [`安装`](#安装)
     - [`创建入口文件`](#创建入口文件)
     - [`启动开发服务`](#启动开发服务)
@@ -15,7 +15,11 @@
     - [`添加文件资源`](#添加文件资源)
     - [添加静态资源](#添加静态资源)
     - [`构建`](#构建)
-- [使用cli生成项目](#使用cli生成项目)
+- [♻使用cli生成项目](#♻使用cli生成项目)
+- [💙typescript](#💙typescript)
+- [⚙zero.config.js](#⚙zeroconfigjs)
+- [✅eslint](#✅eslint)
+    - [typescript](#typescript)
 
 <!-- /TOC -->
 
@@ -24,24 +28,23 @@
 </p>
 
 
+# ✨Features
 
-# Features
+* 配置和业务文件隔离 ，无须触碰任何一行配置文件即可获得完善的开发体验
 
-✨ 配置和业务文件隔离 ，无须触碰任何一行配置文件即可获得完善的开发体验
+* 开箱式的typescript支持，并且基于babel plugin进行ts编译，比ts-loader效率更高
 
-✨ 开箱式的typescript支持，并且基于babel plugin进行ts编译，比ts-loader效率更高
+* 隔离配置的同时，也支持通过zero.config.js对一些非常常用的特性进行自定义配置
 
-✨ 隔离配置的同时，也支持通过zero.config.js对一些非常常用的特性进行自定义配置
+* 多页面应用开发
 
-✨ 多页面应用开发
-
-✨ 全面的css支持,包括css module、sass、less、styled-jsx
-
-<br />
+* 全面的css支持,包括css module、sass、less、styled-jsx
 
 <br />
 
-# 快速上手
+<br />
+
+# 💥快速上手
 
 本节从零开始介绍zero的用法，会逐步的对其功能进行介绍，如果是进行实际的项目开发，则可以直接跳转查看使用cli生成项目 /* TODO: 添加链接 */
 
@@ -379,7 +382,7 @@ npx zero build ./index.jsx ./index.html
 
 <br />
 
-# 使用cli生成项目
+# ♻使用cli生成项目
 
 首选，确保你已经全局或本地安装了`zero`, 如果没有，请查看 [安装](#安装)
 
@@ -409,7 +412,7 @@ zero create ts-spa my-tsapp
 
 <br />
 
-# typescript
+# 💙typescript
 
 推荐使用`zero craete ts-spa projectName` 进行typescript项目的创建，包含了一套非常通用的配置，如果你想从零开始的话，也是非常简单的, 请查看 [快速上手](#快速上手)。 
 
@@ -425,7 +428,7 @@ zero create ts-spa my-tsapp
 
 <br />
 
-# zero.config.js
+# ⚙zero.config.js
 
 通过项目根目录的zero.config.js, 可以对一些常用的配置项进行配置
 
@@ -526,7 +529,7 @@ const defaultConfig = {
 
 <br />
 
-# eslint 
+# ✅eslint 
 
 首先，不推荐使用webpack来检测代码风格，只要确保目录下包含eslint配置文件，然后正确的安装了对应依赖，即可通过vscode或idea获得eslint检测，编辑器对错误的提示比控制台更加直观且不会造成编辑器和webpack同时检测代码风格引起的性能浪费。
 
