@@ -22,7 +22,7 @@
 <!-- /TOC -->
 
 <p align="center">
-<img src="./logo.png" alt="ZERO" />
+<img src="https://iixianjie.github.io/file-repository/logo/logo.png" alt="ZERO" />
 </p>
 
 
