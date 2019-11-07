@@ -16,6 +16,11 @@
     - [添加静态资源](#添加静态资源)
     - [`构建`](#构建)
 - [使用cli生成项目](#使用cli生成项目)
+- [typescript](#typescript)
+- [⚙zero.config.js](#⚙zeroconfigjs)
+- [开发多页面程序](#开发多页面程序)
+- [eslint](#eslint)
+    - [typescript](#typescript-1)
 
 <!-- /TOC -->
 
@@ -24,16 +29,17 @@
 </p>
 
 
-
 # Features
 
-✨ 配置和业务文件隔离 ，无须触碰任何一行配置文件即可获得完善的开发体验
+* 配置和业务文件隔离 ，无须触碰任何一行配置文件即可获得完善的开发体验
 
-✨ 开箱式的typescript支持，并且基于babel plugin进行ts编译，比ts-loader效率更高
+* 开箱式的typescript支持，并且基于babel plugin进行ts编译，比ts-loader效率更高
 
-✨ 隔离配置的同时，也支持通过zero.config.js对一些非常常用的特性进行自定义配置
+* 隔离配置的同时，也支持通过zero.config.js对一些非常常用的特性进行自定义配置
 
-✨ 支持多页面应用开发
+* 多页面应用开发
+
+* 全面的css支持,包括css module、sass、less、styled-jsx
 
 <br />
 
@@ -423,7 +429,7 @@ zero create ts-spa my-tsapp
 
 <br />
 
-# zero.config.js
+# ⚙zero.config.js
 
 通过项目根目录的zero.config.js, 可以对一些常用的配置项进行配置
 
@@ -525,7 +531,6 @@ const defaultConfig = {
 <br />
 
 # 开发多页面程序
-
 通过以下配置，可以开启多页面支持
 
 ```shell

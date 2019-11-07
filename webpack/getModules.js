@@ -160,6 +160,14 @@ function getBabelOptions(isDevelopment) {
       require.resolve('@babel/plugin-proposal-optional-chaining'),
       [require.resolve('@babel/plugin-proposal-class-properties'), { loose: false }],
       require.resolve('@babel/plugin-syntax-dynamic-import'),
+      [
+        require.resolve("styled-jsx/babel"),
+        {
+          "plugins": [
+            [require.resolve("styled-jsx-plugin-sass"), { ...config.sass }]
+          ]
+        }
+      ]
     ],
   };
 
@@ -169,8 +177,12 @@ function getBabelOptions(isDevelopment) {
       require.resolve('@babel/preset-typescript'),
     );
     options.plugins.push(
-      [require.resolve('@babel/plugin-transform-typescript'), { allowNamespaces: true, importHelpers: true, declaration: true }],
-    )
+      [require.resolve('@babel/plugin-transform-typescript'), {
+        allowNamespaces: true,
+        importHelpers: true,
+        declaration: true,
+      }],
+    );
   }
 
   if (isDevelopment) {
