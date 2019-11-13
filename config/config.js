@@ -31,6 +31,9 @@ const defaultConfig = {
    * */
   pages: false, // 支持命令行
 
+  /** 指定的页面会从入口中排除，如['about', 'user']，注意不包含文件后缀 */
+  // pageIncludes: [],
+
   /* TODO: 监听mock目录下文件的变更重启服务 */
   mock: false, // dev模式下使用, 开启mock服务, 支持命令行
 

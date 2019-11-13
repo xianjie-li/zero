@@ -39,6 +39,8 @@
 
 ✨全面的css支持,包括css module、sass、less、styled-jsx
 
+✨不限于react，也可以编写常规js或ts项目
+
 <br />
 
 <br />
@@ -464,6 +466,9 @@ const defaultConfig = {
    * 4. 直接子目录下的js以'_'开头进行命名可以避免改文件被误识别为入口文件，直接子目录内部的任何子目录不受以上规则影响
    * */
   pages: false, // 支持命令行开关（1、0）
+    
+  /** 存在pageIncludes 且 length > 0时，只有该配置内指定的入口会生效，如['user', 'about']。当页面过多时可以在开发时进行配置以提升编译速度 */
+  pageExcludes: [],
 
   // dev模式下使用, 开启mock服务, 支持命令行开关（1、0）
   mock: false,

@@ -36,7 +36,7 @@ async function startBuild() {
       if (err) {
         console.error(err.stack || err);
         if (err.details) {
-          console.error(1, err.details);
+          console.error(err.details);
         }
         return;
       }
@@ -44,7 +44,7 @@ async function startBuild() {
       const info = stats.toJson();
 
       if (stats.hasErrors()) {
-        console.error(2, info.errors);
+        console.error(info.errors.toLocaleString());
         return;
       }
 

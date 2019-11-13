@@ -157,8 +157,13 @@ exports.getEntry = () => {
     const formatEntry = [];
 
     entrys.forEach((v) => {
-      const baseName = path.basename(v).replace(/\.(js|ts)/, '');
+      const baseName = path.basename(v).replace(/\.(jsx?|tsx?)/, '');
       const dirName = path.dirname(v);
+
+      // 存在pageIncludes 且 length > 0时，只有该配置内指定的入口会生效，如['user', 'about']。当页面过多时可以在开发时进行配置以提升编译速度
+      if (Array.isArray(config.pageIncludes) && config.pageIncludes.length && !config.pageIncludes.includes(baseName)) {
+        return;
+      }
 
       // 查找入口js所属路径下的模板文件(pug|html)
       const tpl = glob.sync(`${ path.resolve(dirName) }*/*.{pug,html}`);
@@ -181,6 +186,8 @@ exports.getEntry = () => {
         });
       }
     });
+
+    console.log(formatEntry);
 
     return formatEntry;
   }

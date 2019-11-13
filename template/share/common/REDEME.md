@@ -1,3 +1,6 @@
+# zero
+0配置的react脚手架
+
 ## DOC
 <https://github.com/Iixianjie/zero>
 
