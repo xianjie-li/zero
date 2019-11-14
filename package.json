@@ -10,7 +10,8 @@
   "repository": "https://github.com/Iixianjie/zero",
   "peerDependencies": {
     "react": "16.10.2",
-    "react-dom": "16.10.2"
+    "react-dom": "16.10.2",
+    "@babel/runtime": "^7.5.5"
   },
   "dependencies": {
     "@babel/core": "^7.6.4",
