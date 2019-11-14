@@ -1,11 +1,18 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const path = require('path');
+const fs = require('fs-extra');
 
 const { getRootRelativePath, getModeInfo, getEnvs, mixConfigAndArgs, getEntry, createEntryAndTplPlugins } = require('../common/utils');
 const config = require('../config/config')();
 const getModules = require('./getModules');
-const userPkg = require(getRootRelativePath('./package.json')) || {};
+
+let userPkg = {};
+const pkgPath = getRootRelativePath('./package.json');
+if (fs.pathExistsSync(pkgPath)) {
+  userPkg = require(pkgPath);
+}
+
 
 module.exports = (mode, share) => {
   const { fullPublicPath, isSPA, entry, template } = mixConfigAndArgs(config, share);
