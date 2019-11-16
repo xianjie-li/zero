@@ -8,8 +8,13 @@
     "start:mock": "zero start --mock=1",
     "build": "zero build"
   },
-  "devDependencies": {
-    "@lxjx/zero": "^0.9.4"
+  "dependencies": {
+    
+    "react": "latest",
+    "react-dom": "latest"
   },
-  "dependencies": {}
+  "devDependencies": {
+    "@lxjx/zero": "latest",
+    "react-hot-loader": "latest"
+  }
 }

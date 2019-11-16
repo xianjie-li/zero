@@ -44,15 +44,20 @@ async function createTemplate() {
 
   const userPkgPath = path.resolve(projectPath, './package.json');
   const userPkg = require(userPkgPath);
+  
   userPkg['devDependencies']['@lxjx/zero'] = `^${pkg.version}`;
+  userPkg['devDependencies']['react-hot-loader'] = `${pkg.devDependencies['react-hot-loader']}`;
+  userPkg['dependencies']['react'] = `${pkg.devDependencies['react']}`;
+  userPkg['dependencies']['react-dom'] = `${pkg.devDependencies['react-dom']}`;
   userPkg['name'] = projectName;
+
   fs.outputJsonSync(userPkgPath, userPkg, {
     spaces: 2,
   });
 
   spinner.succeed('创建成功!');
 
-  log.info(`请在项目目录执行${chalk.blue('yarn')} 或 ${chalk.blue('npm install')} 安装依赖, 安装完成后, 根据README.md文件中的说明启动开发服务，或者查看文档:`);
+  log.info(`请执行 ${chalk.blue(`cd ./${projectName}`)} 切换到项目目录，并使用 ${chalk.blue('yarn')} 或 ${chalk.blue('npm install')} 安装依赖, 安装完成后, 根据README.md文件中的说明启动开发服务，或者查看文档:`);
   console.log('https://github.com/Iixianjie/zero');
 }
 
