@@ -1,6 +1,6 @@
 {
   "name": "@lxjx/zero",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "zero configured react scaffolding, supports Typescript, out of the box",
   "authors": {
     "name": "lixianjie",
@@ -9,11 +9,11 @@
   "license": "MIT",
   "repository": "https://github.com/Iixianjie/zero",
   "peerDependencies": {
+    "@babel/runtime": "^7.5.5",
     "react": "16.10.2",
-    "react-dom": "16.10.2",
-    "@babel/runtime": "^7.5.5"
+    "react-dom": "16.10.2"
   },
-  "devDependencies": {    
+  "devDependencies": {
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-hot-loader": "^4.12.15"
