@@ -157,6 +157,7 @@ function getBabelOptions(isDevelopment) {
           useESModules: false,
         },
       ],
+      [require.resolve("@babel/plugin-proposal-decorators"), { legacy: true }],
       require.resolve('@babel/plugin-proposal-optional-chaining'),
       [require.resolve('@babel/plugin-proposal-class-properties'), { loose: false }],
       require.resolve('@babel/plugin-syntax-dynamic-import'),
