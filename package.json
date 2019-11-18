@@ -1,6 +1,6 @@
 {
   "name": "@lxjx/zero",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "zero configured react scaffolding, supports Typescript, out of the box",
   "authors": {
     "name": "lixianjie",
@@ -12,11 +12,6 @@
     "@babel/runtime": "^7.5.5",
     "react": "16.10.2",
     "react-dom": "16.10.2"
-  },
-  "devDependencies": {
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
-    "react-hot-loader": "^4.12.15"
   },
   "dependencies": {
     "@babel/core": "^7.6.4",
@@ -74,7 +69,10 @@
     "progress-bar-webpack-plugin": "^1.12.1",
     "pug": "^2.0.4",
     "pug-loader": "^2.4.0",
+    "react": "16.10.2",
     "react-dev-utils": "^9.1.0",
+    "react-dom": "16.10.2",
+    "react-hot-loader": "^4.12.15",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
     "styled-jsx": "^3.2.3",
