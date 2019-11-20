@@ -1,6 +1,6 @@
 {
   "name": "@lxjx/zero",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "description": "zero configured react scaffolding, supports Typescript, out of the box",
   "authors": {
     "name": "lixianjie",
@@ -11,7 +11,6 @@
   "peerDependencies": {
     "@babel/runtime": "^7.7.2",
     "@types/react": "^16.9.11",
-
     "@types/react-dom": "^16.9.4",
     "react": "16.12.0",
     "react-dom": "16.12.0"
