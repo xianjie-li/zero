@@ -10,6 +10,9 @@
   "repository": "https://github.com/Iixianjie/zero",
   "peerDependencies": {
     "@babel/runtime": "^7.7.2",
+    "@types/react": "^16.9.11",
+
+    "@types/react-dom": "^16.9.4",
     "react": "16.12.0",
     "react-dom": "16.12.0"
   },
@@ -28,8 +31,6 @@
     "@hot-loader/react-dom": "^16.11.0",
     "@lxjx/utils": "^1.0.9",
     "@types/node": "^12.12.8",
-    "@types/react": "^16.9.11",
-    "@types/react-dom": "^16.9.4",
     "@types/styled-jsx": "^2.2.8",
     "@typescript-eslint/eslint-plugin": "^2.6.0",
     "@typescript-eslint/parser": "^2.6.0",
@@ -70,9 +71,7 @@
     "progress-bar-webpack-plugin": "^1.12.1",
     "pug": "^2.0.4",
     "pug-loader": "^2.4.0",
-    "react": "16.12.0",
     "react-dev-utils": "^9.1.0",
-    "react-dom": "16.12.0",
     "react-hot-loader": "^4.12.18",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
