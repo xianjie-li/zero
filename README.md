@@ -45,29 +45,63 @@
 
 <br />
 
+# 使用cli生成项目
+
+全局安装`zero`,也可以本地安装并使用npx命令。
+
+`npm install @lxjx/zero -g`
+
+安装完成后，切换到你要创建项目的目录，执行list命令查看项目类型列表:
+
+```shell
+zero list
+
+# -> 输出如下
+λ zero list
+ZERO: 模板列表:
+- js-spa            javascript单页应用
+- ts-spa            typescript单页应用
+- js-mpa            javascript多页应用
+- ts-mpa            typescript多页应用
+```
+
+然后根据你想要创建的项目类型：
+
+```shell
+zero create ts-spa my-tsapp
+```
+
+创建完成后，根据命令行的提示安装依赖并执行对应的开发命令即可。
+
+<br />
+
+<br />
+
 # 快速上手
 
 本节从零开始介绍zero的用法，会逐步的对其功能进行介绍，如果是进行实际的项目开发，则可以直接跳转查看[使用cli生成项目](#使用cli生成项目) 
 
 ### `安装`
 
-推荐将脚手架安装到本地，使工作目录独立于外部环境，当然，全局安装也是可以的，如果使用全局安装，则可以省略下文中的所有`npx`命令
+推荐将脚手架安装到本地，使工作目录独立于外部环境，当然，也可以全局安装来进行快速原型开发或者是生成项目文件，如果使用全局安装，则可以省略下文中的所有`npx`命令
 
 ```shell
  # 创建目录
 mkdir my-zero-app
+cd my-zero-app
 
  # 初始化项目, yarn init -y
 npm init -y
 
 # 安装依赖, yarn add @lxjx/zero --dev
 npm install @lxjx/zero --save-dev
+npm install react react-dom
 
 # 检测是否安装成功
 npx zero -h
 ```
 
-> 这里使用npx仅仅是方便演示，它与将命令写在package.js scripts字段中是一致的。要了解更多，可以查看文档<https://github.com/npm/npx>
+> 这里使用npx仅仅是方便演示，它与将命令写在package.js scripts字段中是一致的，你也可以使用 `yarn zero -h`。要了解更多，可以查看文档<https://github.com/npm/npx>
 
 <br />
 
@@ -98,8 +132,6 @@ npx zero -h
 **index.jsx** 
 
 > 支持js、jsx，如果开启了typescript支持，它还可以是ts、tsx。如果不使用react，你也可以用它打包普通js文件。
-
-zero依赖中包含react和react-dom，可以不用安装,  但如果你的编辑器提示未在package.json中找到对应包的警告时，你也可以选择自行安装它们。
 
 ```jsx
 import React from 'react';
@@ -144,6 +176,8 @@ npx zero start ./index.jsx ./index.html
 
 zero的底层已经帮你配置好了HMR相关的东西，只需要修改index.jsx文件内容如下，然后修改其内容，如果修改后浏览器没有刷新但是内容正确替换，则说明HMR配置成功了。
 
+> 如果提示`react-hot-loader`不存在，请手动安装
+
 ```jsx
 + import { hot } from 'react-hot-loader/root';
 import React from 'react';
@@ -170,7 +204,7 @@ ReactDom.render(
 
 ### `为组件添加样式`
 
-CLI默认支持css、以及预编译器sass、less。以.module.(css|scss|sass|less)结尾的文件会作为css module文件使用。
+CLI默认支持css、以及预编译器sass、less。以.module.(css|scss|sass|less)结尾的文件会作为css module文件使用。你也可以直接使用styled-jsx。
 
 在工作目录添加index.module.scss文件, 如果你更喜欢使用普通css语法，则去掉 ".module"
 
@@ -339,7 +373,7 @@ npx zero build ./index.jsx ./index.html
 
 完成打包后查看工作目录，发现生成了dist目录，所有打包产物默认都会输出到dist文件夹下，现在你有两种方式来测试打包后的文件:
 
-** 方式1: 开启一个本地服务**
+**方式1: 开启一个本地服务**
 
 如果本地有nginx的话，可以将dist目录下的文件放到站点目录下查看效果，没有的话也很简单，使用`serve`包:
 
@@ -357,7 +391,7 @@ OK， 我们的代码现在运行于一个测试服务器上。当你准备好�
 
 <br />
 
-** 方式2: 更改配置，让打包文件能在本地运行**
+**方式2: 更改配置，让打包文件能在本地运行**
 
 zero对一些常用的选项提供了配置文件，具体可以查看 [zero.config.js](#zero.config.js) 
 
@@ -378,36 +412,6 @@ npx zero build ./index.jsx ./index.html
 ```
 
 完成后，直接在浏览器运行`dist/index.html`
-
-<br />
-
-<br />
-
-# 使用cli生成项目
-
-首选，确保你已经全局或本地安装了`zero`, 如果没有，请查看 [安装](#安装)
-
-安装完成后，命令行切换到你要创建项目的目录，执行list命令查看项目类型列表:
-
-```shell
-zero list
-
-# -> 输出如下
-λ zero list
-ZERO: 模板列表:
-- js-spa            javascript单页应用
-- ts-spa            typescript单页应用
-- js-mpa            javascript多页应用
-- ts-mpa            typescript多页应用
-```
-
-然后根据你想要创建的项目类型：
-
-```shell
-zero create ts-spa my-tsapp
-```
-
-创建完成后，根据命令行的提示安装依赖并执行对应的开发命令即可。
 
 <br />
 
