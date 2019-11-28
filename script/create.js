@@ -46,9 +46,7 @@ async function createTemplate() {
   const userPkg = require(userPkgPath);
   
   userPkg['devDependencies']['@lxjx/zero'] = `^${pkg.version}`;
-  userPkg['devDependencies']['react-hot-loader'] = `${pkg.devDependencies['react-hot-loader']}`;
-  userPkg['dependencies']['react'] = `${pkg.devDependencies['react']}`;
-  userPkg['dependencies']['react-dom'] = `${pkg.devDependencies['react-dom']}`;
+  userPkg['devDependencies']['react-hot-loader'] = `${pkg.dependencies['react-hot-loader']}`;
   userPkg['name'] = projectName;
 
   fs.outputJsonSync(userPkgPath, userPkg, {
