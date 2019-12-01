@@ -15,6 +15,7 @@ module.exports = async (cmdPort, cmdHost) => {
     hot: true,
     quiet: true,
     overlay: true,
+    disableHostCheck: true,
     proxy: config.proxy,
     clientLogLevel: 'warning',
     // before(app, server, compiler) {
