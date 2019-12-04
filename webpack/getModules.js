@@ -139,6 +139,8 @@ module.exports = (isDevelopment, MiniCssExtractPlugin) => {
 };
 
 function getBabelOptions(isDevelopment) {
+  const enableTs = fs.pathExistsSync(getRootRelativePath('./tsconfig.json'));
+
   const options = {
     cacheDirectory: isDevelopment,
     cacheCompression: isDevelopment,
@@ -157,9 +159,9 @@ function getBabelOptions(isDevelopment) {
           useESModules: false,
         },
       ],
-      [require.resolve("@babel/plugin-proposal-decorators"), { legacy: true }],
       require.resolve('@babel/plugin-proposal-optional-chaining'),
       [require.resolve('@babel/plugin-proposal-class-properties'), { loose: false }],
+      [require.resolve("@babel/plugin-proposal-decorators"), { legacy: true }],
       require.resolve('@babel/plugin-syntax-dynamic-import'),
       [
         require.resolve("styled-jsx/babel"),
@@ -173,7 +175,7 @@ function getBabelOptions(isDevelopment) {
   };
 
   /* 开启typescript */
-  if (fs.pathExistsSync(getRootRelativePath('./tsconfig.json'))) {
+  if (enableTs) {
     options.presets.push(
       require.resolve('@babel/preset-typescript'),
     );
