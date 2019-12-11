@@ -29,17 +29,17 @@
 
 # Features
 
-配置和业务文件隔离 ，无须触碰任何一行配置文件即可获得完善的开发体验
+* 配置和业务文件隔离 ，无须触碰任何一行配置文件即可获得完善的开发体验
 
-✨开箱式的typescript支持，并且基于babel plugin进行ts编译，比ts-loader效率更高
+* 基于babel plugin的typescript配置，编译更快
 
-✨隔离配置的同时，也支持通过zero.config.js对一些非常常用的特性进行自定义配置
+* 支持基础配置文件zero.config.js对一些非常常用的特性进行自定义配置
 
-✨多页面应用开发
+* 多页面应用开发
 
-✨全面的css支持,包括css module、sass、less、styled-jsx
+* 全面的css支持,包括css module、sass、less、styled-jsx
 
-✨不限于react，也可以编写常规js或ts项目
+* 不限于react，也可以编写常规js或ts项目
 
 <br />
 
@@ -50,6 +50,12 @@
 全局安装`zero`,也可以本地安装并使用npx命令。
 
 `npm install @lxjx/zero -g`
+
+
+
+> 注意: 由于内置了sass支持，可能会出现node-sass安装报错，可以搜索相关解决方案进行解决。
+
+
 
 安装完成后，切换到你要创建项目的目录，执行list命令查看项目类型列表:
 
@@ -78,8 +84,6 @@ zero create ts-spa my-tsapp
 <br />
 
 # 快速上手
-
-本节从零开始介绍zero的用法，会逐步的对其功能进行介绍，如果是进行实际的项目开发，则可以直接跳转查看[使用cli生成项目](#使用cli生成项目) 
 
 ### `安装`
 
@@ -204,29 +208,24 @@ ReactDom.render(
 
 ### `为组件添加样式`
 
-CLI默认支持css、以及预编译器sass、less。以.module.(css|scss|sass|less)结尾的文件会作为css module文件使用。你也可以直接使用styled-jsx。
+CLI默认支持css、以及预编译器sass、less。以.module.(css|scss|sass|less)结尾的文件会作为css module文件使用。你也可以直接使用styled-jsx(非常推荐)。
 
-在工作目录添加index.module.scss文件, 如果你更喜欢使用普通css语法，则去掉 ".module"
-
-```scss
-.app {
-  color: red;
-}
-```
-
-然后修改index.jsx组件,  如果一切正常的话，你会看到浏览器中的Hello Zero变为了红色，再修改index.module.scss文件中的样式，浏览器会立即作出响应并且热加载正常运行。
+修改index.jsx组件,  如果一切正常的话，你会看到浏览器中的Hello Zero变为了蓝色并且热加载正常运行。
 
 ```jsx
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import ReactDom from 'react-dom';
 
-+ import sty from './index.module.scss';
-
 function App() {
-  return (
-+    <div className={sty.app}>Hello Zero</div>
-  )
+  <div>
+      <div className="title">Hello Zero!</div>
+      <style jsx>{`
+        .title {
+          color: blue;
+        }
+      `}</style>
+  </div>
 }
 
 const HotApp = hot(App);
@@ -246,7 +245,7 @@ ReactDom.render(
 
 zero对文件也做了相应的配置，你可以直接使用图片、视频或其他资源作为依赖。
 
-在工作目录添加logo.jpg文件，并如下更改代码：
+在工作目录添加logo.jpg文件，并如下更改代码（以下例子使用css module作为示例）：
 
 **index.module.scss**
 
@@ -273,7 +272,7 @@ import ReactDom from 'react-dom';
 
 + import Imglogo from './logo.jpg';
 
-import sty from './index.module.scss';
++ import sty from './index.module.scss';
 
 function App() {
   return (
@@ -337,7 +336,7 @@ mkdir public
 
 ```
 
-如果使用的是pug则使用如下
+如果模板使用的是pug则使用如下
 
 ```jade
 doctype html
@@ -429,13 +428,15 @@ npx zero build ./index.jsx ./index.html
 
 推荐使用`zero craete ts-spa projectName` 进行typescript项目的创建，包含了一套非常通用的配置，如果你想从零开始的话，也是非常简单的, 请查看 [快速上手](#快速上手)。 
 
-项目根目录存在tsconfig.json文件即视为开启typescript，另一个值得注意的点是zero.config.js中的typescriptChecker配置项,  开启后会通过webpack新开一个线程进行类型检测并将错误反馈到控制台，如果你的编辑器支持ts类型检测，可以选择关闭它减少电脑的资源占用。
+项目根目录存在tsconfig.json文件即视为开启typescript，另一个值得注意的点是zero.config.js中的typescriptChecker配置项,  开启后会通过webpack新开一个线程进行类型检测并将错误反馈到控制台，如果你的编辑器支持ts类型检测，关闭可以极大的提高编译速度。
 
 ```js
 {
-    typescriptChecker: true, // 默认开启
+    typescriptChecker: true, // 默认关闭
 }
 ```
+
+^ 注意： 虽然typescriptChecker运行于独立线程上，但是它与webpack的编译结果是会相互阻塞的，即webpack会在typescriptChecker类型检测完成后才出发编译完成的钩子。
 
 <br />
 
@@ -529,7 +530,7 @@ const defaultConfig = {
   
   /* 工作目录根目录存在tsconfig.json时视为开启typescript支持 */
   // 底层使用babel对typescript进行编译，速度会比ts-loader更快，但是babel只负责转换ts，不会对类型错误进行提示，如果你使用idea或者vscode等支持ts类型检测的编辑器，确保项目根存在tsconfig.json文件即可，如果编辑器不支持类型检测或希望webpack对类型错误进行提示则开启此项，它将开启一个独立的线程来进行类型检测。
-  typescriptChecker: true, 
+  typescriptChecker: false, 
     
   // 通过暴露的webpack配置，你可以对配置做一些简单的扩展, 请确保将修改后的config正确返回
   configWebpack(webpackConfig, { isDevelopment, isProduction }) {
@@ -582,6 +583,8 @@ pages目录结构如下：
 
 
 >  你也可以直接使用命令行`zero create ts-mpa`创建多页应用骨架
+>
+>  当项目体积较大时，可以通过pageExcludes配置来避免对当前开发环节外的页面进行编译，从而提高编译速度
 
 <br />
 

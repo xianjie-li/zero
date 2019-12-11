@@ -62,7 +62,7 @@ const defaultConfig = {
     '@': path.resolve(process.cwd(), './src')
   },
   /* 工作目录根目录存在tsconfig.json时视为开启typescript支持 */
-  typescriptChecker: true, // 底层使用babel对typescript进行编译，速度会比ts-loader更快，但是babel只负责转换ts，不会对类型错误进行提示，如果你使用idea或者vscode等支持ts类型检测的编辑器，确保项目根存在tsconfig.json文件即可，如果编辑器不支持类型检测或希望webpack对类型错误进行提示则开启此项，它将开启一个独立的线程来进行类型检测。
+  typescriptChecker: false, // 底层使用babel对typescript进行编译，速度会比ts-loader更快，但是babel只负责转换ts，不会对类型错误进行提示，如果你使用idea或者vscode等支持ts类型检测的编辑器，确保项目根存在tsconfig.json文件即可，如果编辑器不支持类型检测或希望webpack对类型错误进行提示则开启此项，它将开启一个独立的线程来进行类型检测。
   configWebpack(webpackConfig, { isDevelopment, isProduction }) { // 可通过此方法简单的自定义webpack配置, 请确保将修改后的config正确返回
     // if (!this.pages && isProduction) {
     //   webpackConfig.output.filename = 'myApp.js';
