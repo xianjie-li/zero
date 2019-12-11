@@ -89,5 +89,13 @@
   },
   "bin": {
     "zero": "./bin/index.js"
-  }
+  },
+  "files": [
+    "bin",
+    "common",
+    "config",
+    "script",
+    "template",
+    "webpack"
+  ]
 }
