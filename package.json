@@ -1,6 +1,6 @@
 {
   "name": "@lxjx/zero",
-  "version": "1.2.13",
+  "version": "1.2.14",
   "description": "zero configured react scaffolding, supports Typescript, out of the box",
   "authors": {
     "name": "lixianjie",
@@ -89,5 +89,13 @@
   },
   "bin": {
     "zero": "./bin/index.js"
-  }
+  },
+  "files": [
+    "bin",
+    "common",
+    "config",
+    "script",
+    "template",
+    "webpack"
+  ]
 }
