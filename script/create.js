@@ -6,8 +6,6 @@ const ora = require('ora');
 const cmd = require('../common/cmd');
 const { log, getRootRelativePath } = require('../common/utils');
 const templates = require('../template/template-infos');
-const { promisify } = require('@lxjx/utils');
-const asyncCopy = promisify(fs.copy);
 const pkg = require('../package.json');
 
 cmd.parse(process.argv);
@@ -50,6 +48,11 @@ async function createTemplate() {
   userPkg['dependencies']['react'] = `${pkg.devDependencies['react']}`;
   userPkg['dependencies']['react-dom'] = `${pkg.devDependencies['react-dom']}`;
   userPkg['name'] = projectName;
+
+  if (tplName === 'ts-spa' || tplName === 'ts-mpa') {
+    userPkg['scripts']['prebuild'] = "npm run typecheck && npm run lint";
+    userPkg['scripts']['typecheck'] = "tsc --noEmit";
+  }
 
   fs.outputJsonSync(userPkgPath, userPkg, {
     spaces: 2,
