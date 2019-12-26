@@ -147,6 +147,7 @@ function getBabelOptions(isDevelopment) {
     presets: [
       [require.resolve('@babel/preset-env'), { useBuiltIns: false }],
       require.resolve('@babel/preset-react'),
+      ...(config.babel.presets || []), // 将配置中的预设合并
     ],
     plugins: [
       [
@@ -170,7 +171,8 @@ function getBabelOptions(isDevelopment) {
             [require.resolve("styled-jsx-plugin-sass"), { ...config.sass }]
           ]
         }
-      ]
+      ],
+      ...(config.babel.plugins || []), // 将配置中的插件合并
     ],
   };
 

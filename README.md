@@ -444,7 +444,7 @@ npx zero build ./index.jsx ./index.html
 
 # zero.config.js
 
-通过项目根目录的zero.config.js, 可以对一些常用的配置项进行配置
+通过项目根目录的zero.config.js, 可以对一些常用的配置项进行配置,  以下为默认配置
 
 ```js
 const defaultConfig = {
@@ -515,7 +515,9 @@ const defaultConfig = {
   },
     
   // 传递给less-loader的options
-  less: {}, 
+  less: {
+      javascriptEnabled: true,
+  }, 
     
   // 传递给pug-loader的options
   pug: {}, 
@@ -529,7 +531,8 @@ const defaultConfig = {
   },
   
   /* 工作目录根目录存在tsconfig.json时视为开启typescript支持 */
-  // 底层使用babel对typescript进行编译，速度会比ts-loader更快，但是babel只负责转换ts，不会对类型错误进行提示，如果你使用idea或者vscode等支持ts类型检测的编辑器，确保项目根存在tsconfig.json文件即可，如果编辑器不支持类型检测或希望webpack对类型错误进行提示则开启此项，它将开启一个独立的线程来进行类型检测。
+  // 如果你使用idea或者vscode等支持ts类型检测的编辑器，确保项目根存在tsconfig.json文件即可获得ide级别的类型检测，如果编辑器不支持类型检测或希望webpack对类型错误进行提示则开启此项，它将开启一个独立的线程来进行类型检测。
+ // 不建议开启。通过ide检测 +  prebuild 搭配进行类型检测可以大大提高编译速度
   typescriptChecker: false, 
     
   // 通过暴露的webpack配置，你可以对配置做一些简单的扩展, 请确保将修改后的config正确返回
@@ -539,6 +542,32 @@ const defaultConfig = {
     }
     return webpackConfig;
   },
+    
+  /**
+   *  添加额外的babel预设和插件
+   *
+   *  默认包含的配置
+   *  presets:
+   *  @babel/preset-env
+   *  @babel/preset-react
+   *
+   *  plugins
+   *  @babel/plugin-transform-runtime
+   *  @babel/plugin-proposal-optional-chaining
+   *  @babel/plugin-proposal-class-properties
+   *  @babel/plugin-proposal-decorators
+   *  @babel/plugin-syntax-dynamic-import
+   *  react-hot-loader/babel
+   *  styled-jsx/babel -> styled-jsx-plugin-sass
+   *
+   *  当开启了ts时, 额外包含
+   *  @babel/preset-typescript
+   *  @babel/plugin-transform-typescript
+   *  */
+  babel: {
+    presets: [],
+    plugins: [],
+  }
 };
 ```
 

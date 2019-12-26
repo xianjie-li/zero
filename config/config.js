@@ -8,20 +8,14 @@ if (fs.pathExistsSync(configPath)) {
   userConfig = require(configPath);
 }
 
-/* TODO: 3. 添加 -g命令 */
-
 const defaultConfig = {
   publicPath: '/', // 资源访问路径, 当需要编译后的文件能本地直接访问时，可以设置为./
   publicDirName: 'public', // 公众资源文件夹，存放不想通过webpack编译的东西，打包后所有打包产物和该目录下的文件会被移动outputPath下的同名目录下
   outputPath: './dist', // 文件打包到此目录, 以当前工作目录为根目录
 
-  /* TODO: 1. 添加预设模板 typescript ts pages(js、js) */
-  /* TODO: 2. eslint */
-
   entry: './src/main', // 默认入口文件位置，只在没有设置pages的情况下生效
   template: './index.html', // 默认模板文件位置，只在没有设置pages的情况下生效
 
-  /* TODO: 监听pages目录下文件的变更重启服务 */
   /**
    * 开启后，会以指定规则读取cwd()/src/pages下的文件作为入口，规则如下:
    * 1. 以第一级目录下的直接子目录名作为入口名
@@ -55,7 +49,9 @@ const defaultConfig = {
       precision: 3
     }
   },
-  less: {}, // 传递给less-loader的options
+  less: {
+    javascriptEnabled: true,
+  }, // 传递给less-loader的options
   pug: {}, // 传递给pug-loader的options
   extensions: ['.ts', '.tsx', '.js', '.jsx'],
   alias: { // 同webpackOptions.alias
@@ -69,6 +65,31 @@ const defaultConfig = {
     // }
     return webpackConfig;
   },
+  /**
+   *  添加额外的babel预设和插件
+   *
+   *  默认配置
+   *  presets:
+   *  @babel/preset-env
+   *  @babel/preset-react
+   *
+   *  plugins
+   *  @babel/plugin-transform-runtime
+   *  @babel/plugin-proposal-optional-chaining
+   *  @babel/plugin-proposal-class-properties
+   *  @babel/plugin-proposal-decorators
+   *  @babel/plugin-syntax-dynamic-import
+   *  react-hot-loader/babel
+   *  styled-jsx/babel -> styled-jsx-plugin-sass
+   *
+   *  当开启了ts时, 额外包含
+   *  @babel/preset-typescript
+   *  @babel/plugin-transform-typescript
+   *  */
+  babel: {
+    presets: [],
+    plugins: [],
+  }
 };
 
 module.exports = () => ({
