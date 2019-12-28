@@ -89,7 +89,9 @@ const defaultConfig = {
   babel: {
     presets: [],
     plugins: [],
-  }
+  },
+  /* 额外的babel-loader include列表，默认包含根目录下src */
+  extraBabelIncludes: [],
 };
 
 module.exports = () => ({

@@ -83,7 +83,10 @@ module.exports = (isDevelopment, MiniCssExtractPlugin) => {
       {
         test: /\.([tj])sx?$/,
         exclude: /(node_modules|bower_components)/,
-        include: getRootRelativePath('./'),
+        include: [
+          getRootRelativePath('./src'),
+          ...config.extraBabelIncludes,
+        ],
         use: {
           loader: 'babel-loader',
           options: getBabelOptions(isDevelopment),
