@@ -9,7 +9,6 @@ const config = require('../config/config')();
 const fs = require('fs-extra');
 
 module.exports = (mode, { port }) => {
-
   const devConfig = {
     mode,
     /* dev时使用固定地址即可 */

@@ -1,8 +1,9 @@
 const autoprefixer = require('autoprefixer');
 const fs = require('fs-extra');
+const path = require('path');
 
 const config = require('../config/config')();
-const { getRootRelativePath } = require('../common/utils.js');
+const {getRootRelativePath} = require('../common/utils.js');
 
 module.exports = (isDevelopment, MiniCssExtractPlugin) => {
   /* file配置 */
@@ -11,7 +12,7 @@ module.exports = (isDevelopment, MiniCssExtractPlugin) => {
     options: {
       name: isDevelopment
         ? '[name].[ext]'
-        : `[name]${ config.hash ? '.[hash:7]' : '' }.[ext]`,
+        : `[name]${config.hash ? '.[hash:7]' : ''}.[ext]`,
       outputPath: dirName, // 输出目录不同区分
     },
   });
@@ -82,7 +83,7 @@ module.exports = (isDevelopment, MiniCssExtractPlugin) => {
       /* ---------js&ts--------- */
       {
         test: /\.([tj])sx?$/,
-        exclude: /(node_modules|bower_components)/,
+        // exclude: /(node_modules|bower_components)/,
         include: [
           getRootRelativePath('./src'),
           ...config.extraBabelIncludes,
@@ -125,17 +126,17 @@ module.exports = (isDevelopment, MiniCssExtractPlugin) => {
       /* 图 */
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        use: fileConfig(`${ config.publicDirName }/images/`),
+        use: fileConfig(`${config.publicDirName}/images/`),
       },
       /* 影 */
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-        use: fileConfig(`${ config.publicDirName }/video/`),
+        use: fileConfig(`${config.publicDirName}/video/`),
       },
       /* 字 */
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        use: fileConfig(`${ config.publicDirName }/font/`),
+        use: fileConfig(`${config.publicDirName}/font/`),
       },
     ],
   };
@@ -148,7 +149,7 @@ function getBabelOptions(isDevelopment) {
     cacheDirectory: isDevelopment,
     cacheCompression: isDevelopment,
     presets: [
-      [require.resolve('@babel/preset-env'), { useBuiltIns: false }],
+      [require.resolve('@babel/preset-env'), {useBuiltIns: false}],
       require.resolve('@babel/preset-react'),
       ...(config.babel.presets || []), // 将配置中的预设合并
     ],
@@ -164,14 +165,14 @@ function getBabelOptions(isDevelopment) {
         },
       ],
       require.resolve('@babel/plugin-proposal-optional-chaining'),
-      [require.resolve('@babel/plugin-proposal-class-properties'), { loose: false }],
-      [require.resolve("@babel/plugin-proposal-decorators"), { legacy: true }],
+      [require.resolve('@babel/plugin-proposal-class-properties'), {loose: false}],
+      [require.resolve("@babel/plugin-proposal-decorators"), {legacy: true}],
       require.resolve('@babel/plugin-syntax-dynamic-import'),
       [
         require.resolve("styled-jsx/babel"),
         {
           "plugins": [
-            [require.resolve("styled-jsx-plugin-sass"), { ...config.sass }]
+            [require.resolve("styled-jsx-plugin-sass"), {...config.sass}]
           ]
         }
       ],
