@@ -7,7 +7,7 @@
     "start": "zero start",
     "start:mock": "zero start --mock=1",
     "build": "zero build",
-    "lint": "eslint ./",
+    "lint": "eslint ./src/*",
     "prebuild": "npm run lint"
   },
   "dependencies": {
