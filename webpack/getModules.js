@@ -78,6 +78,10 @@ module.exports = (isDevelopment, MiniCssExtractPlugin) => {
     return rule;
   };
 
+  if (!isDevelopment) {
+    config.extraBabelIncludes.push(getRootRelativePath('./node_modules'));
+  }
+
   return {
     rules: [
       /* ---------js&ts--------- */
@@ -149,7 +153,7 @@ function getBabelOptions(isDevelopment) {
     cacheDirectory: isDevelopment,
     cacheCompression: isDevelopment,
     presets: [
-      [require.resolve('@babel/preset-env'), {useBuiltIns: false}],
+      [require.resolve('@babel/preset-env')],
       require.resolve('@babel/preset-react'),
       ...(config.babel.presets || []), // 将配置中的预设合并
     ],
@@ -158,10 +162,7 @@ function getBabelOptions(isDevelopment) {
         // https://github.com/babel/babel/blob/master/packages/babel-preset-stage-0/README.md
         require.resolve('@babel/plugin-transform-runtime'),
         {
-          corejs: false,
-          helpers: true,
-          regenerator: true,
-          useESModules: false,
+          helpers: false,
         },
       ],
       require.resolve('@babel/plugin-proposal-optional-chaining'),
@@ -183,14 +184,9 @@ function getBabelOptions(isDevelopment) {
   /* 开启typescript */
   if (enableTs) {
     options.presets.push(
-      require.resolve('@babel/preset-typescript'),
-    );
-    options.plugins.push(
-      [require.resolve('@babel/plugin-transform-typescript'), {
+      require.resolve('@babel/preset-typescript', {
         allowNamespaces: true,
-        importHelpers: true,
-        declaration: true,
-      }],
+      }),
     );
   }
 
