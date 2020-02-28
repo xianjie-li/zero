@@ -10,7 +10,7 @@ if (fs.pathExistsSync(configPath)) {
 
 const defaultConfig = {
   publicPath: '/', // 资源访问路径, 当需要编译后的文件能本地直接访问时，可以设置为./
-  publicDirName: 'public', // 公众资源文件夹，存放不想通过webpack编译的东西，打包后所有打包产物和该目录下的文件会被移动outputPath下的同名目录下
+  publicDirName: 'public', // 公共资源文件夹，存放不想通过webpack编译的东西，打包后所有打包产物和该目录下的文件会被移动outputPath下的同名目录下
   outputPath: './dist', // 文件打包到此目录, 以当前工作目录为根目录
 
   entry: './src/main', // 默认入口文件位置，只在没有设置pages的情况下生效
@@ -25,7 +25,7 @@ const defaultConfig = {
    * */
   pages: false, // 支持命令行
 
-  /** 指定的页面会从入口中排除，如['about', 'user']，注意不包含文件后缀 */
+  /** 存在pageIncludes 且 length > 0时，只有该配置内指定的入口会生效，如['user', 'about']。当页面过多时可以在开发时进行配置以提升编译速度 */
   // pageIncludes: [],
 
   /* TODO: 监听mock目录下文件的变更重启服务 */
@@ -58,7 +58,7 @@ const defaultConfig = {
     '@': path.resolve(process.cwd(), './src')
   },
   /* 工作目录根目录存在tsconfig.json时视为开启typescript支持 */
-  typescriptChecker: false, // 底层使用babel对typescript进行编译，速度会比ts-loader更快，但是babel只负责转换ts，不会对类型错误进行提示，如果你使用idea或者vscode等支持ts类型检测的编辑器，确保项目根存在tsconfig.json文件即可，如果编辑器不支持类型检测或希望webpack对类型错误进行提示则开启此项，它将开启一个独立的线程来进行类型检测。
+
   configWebpack(webpackConfig, { isDevelopment, isProduction }) { // 可通过此方法简单的自定义webpack配置, 请确保将修改后的config正确返回
     // if (!this.pages && isProduction) {
     //   webpackConfig.output.filename = 'myApp.js';
@@ -84,7 +84,6 @@ const defaultConfig = {
    *
    *  当开启了ts时, 额外包含
    *  @babel/preset-typescript
-   *  @babel/plugin-transform-typescript
    *  */
   babel: {
     presets: [],

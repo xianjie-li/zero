@@ -19,9 +19,9 @@ const mode = 'development';
 process.env.NODE_ENV = mode;
 
 cmd
-  .option('--port <port>', '指定服务port')
-  .option('--host <host>', '指定服务host')
-  .option('--mock <toggle>', '是否开启mock服务')
+  .option('--port <port>', 'specify port')
+  .option('--host <host>', 'specify host')
+  .option('--mock <toggle>', 'start mock server')
   .parse(process.argv);
 
 const [entry, tpl] = checkArgs(cmd.args);

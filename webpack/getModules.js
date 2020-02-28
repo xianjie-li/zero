@@ -87,9 +87,9 @@ module.exports = (isDevelopment, MiniCssExtractPlugin) => {
       /* ---------js&ts--------- */
       {
         test: /\.([tj])sx?$/,
-        // exclude: /(node_modules|bower_components)/,
+        exclude: isDevelopment ? /(node_modules|bower_components)/ : undefined,
         include: [
-          getRootRelativePath('./src'),
+          getRootRelativePath(),
           ...config.extraBabelIncludes,
         ],
         use: {
@@ -147,6 +147,7 @@ module.exports = (isDevelopment, MiniCssExtractPlugin) => {
 };
 
 function getBabelOptions(isDevelopment) {
+  /* 根目录存在tsconfig视为开启ts */
   const enableTs = fs.pathExistsSync(getRootRelativePath('./tsconfig.json'));
 
   const options = {
@@ -166,17 +167,9 @@ function getBabelOptions(isDevelopment) {
         },
       ],
       require.resolve('@babel/plugin-proposal-optional-chaining'),
-      [require.resolve('@babel/plugin-proposal-class-properties'), {loose: false}],
-      [require.resolve("@babel/plugin-proposal-decorators"), {legacy: true}],
+      [require.resolve('@babel/plugin-proposal-class-properties'), { loose: false }],
+      [require.resolve("@babel/plugin-proposal-decorators"), { legacy: true }],
       require.resolve('@babel/plugin-syntax-dynamic-import'),
-      [
-        require.resolve("styled-jsx/babel"),
-        {
-          "plugins": [
-            [require.resolve("styled-jsx-plugin-sass"), {...config.sass}]
-          ]
-        }
-      ],
       ...(config.babel.plugins || []), // 将配置中的插件合并
     ],
   };

@@ -10,31 +10,31 @@ const pkg = require('../package.json');
 
 cmd.parse(process.argv);
 
-createTemplate();
+createTemplate().then();
 
 async function createTemplate() {
   const [tplName, projectName] = cmd.args;
 
   if (!tplName) {
-    log.error('请指定模板类型!');
+    log.error('template type require!');
   }
 
   if (!projectName) {
-    log.error('输入项目名称');
+    log.error('project name require!');
   }
 
   const nowTpl = templates.find(tpl => tpl.name === tplName);
   if (!nowTpl) {
-    log.error(`模板${ chalk.blue(tplName) }不存在，请通过${ chalk.blue('zero list') }查看可用模板`);
+    log.error(`template ${ chalk.blue(tplName) } not exists，execute ${ chalk.blue('zero list') } see available template`);
   }
 
   const projectPath = getRootRelativePath(`./${projectName}`);
 
   if (fs.pathExistsSync(projectPath)) {
-    log.error(`创建项目文件失败, ${chalk.red(projectPath)} 目录已存在`)
+    log.error(`create project fail, ${chalk.red(projectPath)} dir exists`)
   }
 
-  const spinner = ora('正在创建文件，请稍候...').start();
+  const spinner = ora('creating，waiting...').start();
 
   for (const filePath of nowTpl.extraFiles) {
     fs.copySync(filePath, projectPath);
@@ -58,9 +58,9 @@ async function createTemplate() {
     spaces: 2,
   });
 
-  spinner.succeed('创建成功!');
+  spinner.succeed('create success!');
 
-  log.info(`请执行 ${chalk.blue(`cd ./${projectName}`)} 切换到项目目录，并使用 ${chalk.blue('yarn')} 或 ${chalk.blue('npm install')} 安装依赖, 安装完成后, 根据README.md文件中的说明启动开发服务，或者查看文档:`);
+  log.info(`execute ${chalk.blue(`cd ./${projectName}`)} in to project dir，any use ${chalk.blue('yarn')} or ${chalk.blue('npm install')} install dependencies, after the installation complete, see README.md to use，documentation for more:`);
   console.log('https://github.com/Iixianjie/zero');
 }
 

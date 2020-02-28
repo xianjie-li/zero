@@ -11,9 +11,9 @@ const mode = 'production';
 process.env.NODE_ENV = mode;
 
 cmd
-  .option('--analyzer <toggle>', '是否分析包大小')
-  .option('--gzip <toggle>', '是否开启gzip')
-  .option('--drop-console <toggle>', '是否在打包时移除console')
+  .option('--analyzer <toggle>', 'analyze package size')
+  .option('--gzip <toggle>', 'enable gzip')
+  .option('--drop-console <toggle>', 'drop all console')
   .parse(process.argv);
 
 const [entry, tpl] = checkArgs(cmd.args);
@@ -47,10 +47,6 @@ async function startBuild() {
         console.error(info.errors.toLocaleString());
         return;
       }
-
-      // if (stats.hasWarnings()) {
-      //   console.warn(3, info.warnings);
-      // }
 
       console.log(stats.toString({
         assets: true,

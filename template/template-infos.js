@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = [
   {
     name: 'js-spa',
-    desc: 'javascript单页应用',
+    desc: 'javascript single page app',
     extraFiles: [
       path.resolve(__dirname, './js-spa/'),
       path.resolve(__dirname, './share/common/'),
@@ -12,7 +12,7 @@ module.exports = [
   },
   {
     name: 'ts-spa',
-    desc: 'typescript单页应用',
+    desc: 'typescript single page app',
     extraFiles: [
       path.resolve(__dirname, './ts-spa/'),
       path.resolve(__dirname, './share/common/'),
@@ -21,7 +21,7 @@ module.exports = [
   },
   {
     name: 'js-mpa',
-    desc: 'javascript多页应用',
+    desc: 'javascript multiple page app',
     extraFiles: [
       path.resolve(__dirname, './js-mpa/'),
       path.resolve(__dirname, './share/common/'),
@@ -30,7 +30,7 @@ module.exports = [
   },
   {
     name: 'ts-mpa',
-    desc: 'typescript多页应用',
+    desc: 'typescript multiple page app',
     extraFiles: [
       path.resolve(__dirname, './ts-mpa/'),
       path.resolve(__dirname, './share/common/'),

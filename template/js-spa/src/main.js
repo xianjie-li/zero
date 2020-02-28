@@ -7,6 +7,6 @@ import App from './app';
 const HotApp = hot(App);
 
 ReactDom.render(
-  <HotApp />,
+  React.createElement(HotApp),
   document.getElementById('root'),
 );

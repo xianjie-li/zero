@@ -116,14 +116,14 @@ exports.checkArgs = (args/* string[] */) => {
     const entry = glob.sync(exports.getRootRelativePath('./src/main.*(j|t)s?(x)'));
     const tpl = glob.sync(exports.getRootRelativePath(config.template));
     if (entry.length === 0 || tpl.length === 0) {
-      exports.log.error(`请确保执行目录存在${ chalk.blue('./src/main.(t|j)sx?') }以及${ chalk.blue(config.template) }文件，你也可以通过${ chalk.blue('zero (start|build) [entry] [tpl]') }来自行指定入口和模板文件`);
+      exports.log.error(`make sure the execution directory exists in${ chalk.blue('./src/main.(t|j)sx?') } and ${ chalk.blue(config.template) }，you can also pass ${ chalk.blue('zero (start|build) [entry] [tpl]') } from specified entry and template file`);
       process.exit(1);
     }
     return [];
   }
 
   if (args.length && args.length < 2) {
-    exports.log.error('额外参数至少为两位');
+    exports.log.error('extra parameters are at least two digits');
     process.exit(1);
   }
 

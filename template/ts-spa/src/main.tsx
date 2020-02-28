@@ -7,6 +7,6 @@ import App from './app';
 const HotApp = hot(App);
 
 ReactDom.render(
-  <HotApp title="Zero" />,
+  React.createElement(HotApp, { title: 'Zero' }),
   document.getElementById('root'),
 );
