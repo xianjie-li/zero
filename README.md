@@ -2,15 +2,15 @@
 
 - [Features](#features)
 - [快速上手](#快速上手)
-    - [`安装`](#安装)
+  - [安装cli工具](#安装cli工具)
+  - [创建项目](#创建项目)
+  - [开发服务](#开发服务)
+  - [构建生产包](#构建生产包)
+- [快速原型开发](#快速原型开发)
     - [`创建入口文件`](#创建入口文件)
     - [`启动开发服务`](#启动开发服务)
-    - [`配置热重载`](#配置热重载)
-    - [`为组件添加样式`](#为组件添加样式)
-    - [`添加文件资源`](#添加文件资源)
-    - [添加静态资源](#添加静态资源)
-    - [`构建`](#构建)
-- [使用cli生成项目](#使用cli生成项目)
+- [添加静态资源](#添加静态资源)
+- [cli命令](#cli命令)
 - [typescript](#typescript)
 - [zero.config.js](#zeroconfigjs)
 - [开发多页面程序](#开发多页面程序)
@@ -51,10 +51,16 @@
 
 
 
-> ⚠ 注意: 由于内置了sass支持，可能会出现node-sass安装报错，可以搜索相关解决方案进行解决。
+> ⚠ 注意: 由于内置了sass支持，可能会出现node-sass安装报错，可参考以下方式解决
+```shell
+// linux、mac 下
+SASS_BINARY_SITE=https://npm.taobao.org/mirrors/node-sass/ npm install node-sass
+
+// window 下
+set SASS_BINARY_SITE=https://npm.taobao.org/mirrors/node-sass/ && npm install node-sass
+```
 
 <br />
-
 <br />
 
 ## 创建项目
