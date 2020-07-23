@@ -7,7 +7,10 @@
     "start": "zero start",
     "start:mock": "zero start --mock=1",
     "build": "zero build",
-    "lint": "eslint ./src/*",
+    "lint:script": "eslint ./src --ext .js,.jsx,.ts,.tsx",
+    "lint:prettier": "prettier --check ./src/**/*",
+    "lint": "npm run lint:prettier && npm run lint:script",
+    "fix": "prettier --check ./src/**/* --write && eslint ./src --ext .js,.jsx,.ts,.tsx --fix",
     "prebuild": "npm run lint"
   },
   "dependencies": {

@@ -50,7 +50,7 @@ async function createTemplate() {
   userPkg['name'] = projectName;
 
   if (tplName === 'ts-spa' || tplName === 'ts-mpa') {
-    userPkg['scripts']['prebuild'] = "npm run typecheck && npm run lint";
+    userPkg['scripts']['prebuild'] = "npm run lint && npm run typecheck";
     userPkg['scripts']['typecheck'] = "tsc --noEmit";
   }
 
