@@ -1,6 +1,6 @@
 {
   "name": "@lxjx/zero",
-  "version": "1.4.12",
+  "version": "1.4.14",
   "description": "zero configured react scaffolding, supports Typescript, out of the box",
   "authors": {
     "name": "lixianjie",
@@ -29,6 +29,7 @@
     "@babel/preset-typescript": "^7.7.2",
     "@babel/runtime": "^7.7.2",
     "@hot-loader/react-dom": "^16.12.0",
+    "@lxjx/preset-config": "^0.0.4",
     "@lxjx/utils": "^1.0.9",
     "@types/node": "^12.12.8",
     "@types/react": "^16.9.13",
@@ -70,8 +71,7 @@
     "webpack": "^4.41.2",
     "webpack-bundle-analyzer": "^3.6.0",
     "webpack-dev-server": "^3.9.0",
-    "webpack-merge": "^4.2.2",
-    "@lxjx/preset-config": "^0.0.4"
+    "webpack-merge": "^4.2.2"
   },
   "bin": {
     "zero": "./bin/index.js"
