@@ -1,6 +1,6 @@
 import React from 'react';
 
-import sty from './App.module.scss';
+import sty from './app.module.scss';
 
 function App() {
   return (
